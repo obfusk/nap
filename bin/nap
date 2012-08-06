@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# --                                                            # {{{1
+#
+# File        : nap
+# Maintainer  : Felix C. Stegerman <flx@obfusk.net>
+# Date        : 2012-08-06
+#
+# Copyright   : Copyright (C) 2012  Felix C. Stegerman
+# Licence     : GPLv2
+#
+# --                                                            # }}}1
+
+vsn='0.0.0'
+
+usage='nap ...'
+
+function die () { echo "${2:-error}: $1" >&2; exit 1; }
+
+function fail () {
+  local x
+  for x in "$@"; do echo "error: $x" >&2; done
+  die "$usage" usage
+}
+
+# --
+
+rc="${NAPRC:-/etc/naprc}"
+
+source "$rc" || die 'failed to load naprc'
+
+# --
+
+# ...
+
+# --
+
+if [ "$#" -eq 0 -o "$1" == help ]; then
+  echo "nap version $vsn"$'\n\n'"usage: $usage"; exit 0
+fi
+
+cmd="$1"; shift
+
+if [[ "$cmd" =~ ^(new)$ ]]; then
+  : ...
+else
+  fail "unknown command \`$cmd'"
+fi
+
+# --
+
+# vim: set tw=70 sw=2 sts=2 et fdm=marker :

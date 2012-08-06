@@ -71,7 +71,7 @@ Version     : v0.0.0
 
   === felix ===                                                   {{{2
 
-    $ byobu-select-backend          # screen; ^a -> 1
+    $ byobu-select-backend          # screen; ^a too
     $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
                                                                   }}}2
                                                                   }}}1
