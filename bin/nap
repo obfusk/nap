@@ -31,9 +31,9 @@ source "$rc" || die 'failed to load naprc'
 # --
 
 function findlib () {                                           # {{{1
-  local l="$1" x
+  local l="$1" x y
   for x in "${NAP_LIBS[@]}"; do
-    if [ -e "$x/$l" ]; then echo "$x/$l"; return 0; fi
+    y="$x/$l.bash"; if [ -e "$y" ]; then echo "$y"; return 0; fi
   done
   return 1
 }                                                               # }}}1
