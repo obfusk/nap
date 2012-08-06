@@ -38,6 +38,14 @@ function findlib () {                                           # {{{1
   return 1
 }                                                               # }}}1
 
+function loadlib () {
+  local lib="$1" f
+  f="$( findlib "$cmd" )" || die "failed to find lib for \`$lib'"
+  source "$f"             || die "failed to load lib for \`$lib'"
+}
+
+loadlib nap
+
 # --
 
 if [ "$#" -eq 0 -o "$1" == help ]; then
@@ -47,9 +55,7 @@ fi
 cmd="$1"; shift
 
 if [[ "$cmd" =~ ^(new)$ ]]; then
-  lib="$( findlib "cmd.$cmd" )" \
-    || die "failed to load lib for command \`$cmd'"
-  source "$lib"
+  loadlib "cmd.$cmd"
   run "$@"
 else
   fail "unknown command \`$cmd'"
