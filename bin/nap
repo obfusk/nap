@@ -13,7 +13,7 @@
 
 vsn='0.0.0'
 
-usage='nap ...'
+usage='nap ...'                                                 # TODO
 
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
@@ -26,12 +26,17 @@ function fail () {
 # --
 
 rc="${NAPRC:-/etc/naprc}"
-
 source "$rc" || die 'failed to load naprc'
 
 # --
 
-# ...
+function findlib () {                                           # {{{1
+  local l="$1" x
+  for x in "${NAP_LIBS[@]}"; do
+    if [ -e "$x/$l" ]; then echo "$x/$l"; return 0; fi
+  done
+  return 1
+}                                                               # }}}1
 
 # --
 
@@ -42,7 +47,10 @@ fi
 cmd="$1"; shift
 
 if [[ "$cmd" =~ ^(new)$ ]]; then
-  : ...
+  lib="$( findlib "cmd.$cmd" )" \
+    || die "failed to load lib for command \`$cmd'"
+  source "$lib"
+  run "$@"
 else
   fail "unknown command \`$cmd'"
 fi
