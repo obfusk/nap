@@ -1,0 +1,81 @@
+--                                                                {{{1
+
+File        : README.server
+Maintainer  : Felix C. Stegerman <flx@obfusk.net>
+Date        : 2012-08-06
+
+Copyright   : Copyright (C) 2012  Felix C. Stegerman
+Version     : v0.0.0
+
+--                                                                }}}1
+
+=== NB ===                                                        {{{1
+
+  This is my own server setup; YMVV.
+                                                                  }}}1
+
+=== VM ===                                                        {{{1
+
+  * virtualbox
+  * vmdk, fixed, 8gb
+  * !floppy; net #2 host-only
+                                                                  }}}1
+
+=== Installation ===                                              {{{1
+
+  * ubuntu 12.04 server amd64
+  * expert; en_GB*, en_US*, nl_NL*; en_GB; ssh
+                                                                  }}}1
+
+=== Configuration ===                                             {{{1
+
+  ... TODO ...
+
+
+  === root ===                                                    {{{2
+
+    === other ===                                                 {{{3
+
+      $ vim
+          /etc/network/interfaces
+
+      $ aptitude install
+          byobu
+          git
+          tree
+          vim
+
+      $ aptitude update
+      $ aptitude safe-upgrade
+
+      ...
+                                                                  }}}3
+
+    === gitolite ===                                              {{{3
+
+      $ aptitude install
+          gitolite
+
+      $ dpkg-reconfigure gitolite   # user: git; repo: /__git
+
+      ...
+                                                                  }}}3
+
+    === nap ===                                                   {{{3
+
+      $ mkdir /__apps
+
+      ...
+                                                                  }}}3
+                                                                  }}}2
+
+  === felix ===                                                   {{{2
+
+    $ byobu-select-backend          # screen; ^a -> 1
+    $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
+                                                                  }}}2
+                                                                  }}}1
+
+--
+
+vim: set tw=70 sw=2 sts=2 et fdm=marker :
