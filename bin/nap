@@ -13,7 +13,7 @@
 
 vsn='0.0.0'
 
-usage='nap ...'                                                 # TODO
+usage='nap ...'
 
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
@@ -40,11 +40,14 @@ function findlib () {                                           # {{{1
 
 function loadlib () {
   local lib="$1" f
-  f="$( findlib "$cmd" )" || die "failed to find lib for \`$lib'"
+  f="$( findlib "$lib" )" || die "failed to find lib for \`$lib'"
   source "$f"             || die "failed to load lib for \`$lib'"
 }
 
+# --
+
 loadlib nap
+usage="nap { $( nap_cmds ' | ' ) } [ <arg(s)> ]"
 
 # --
 
@@ -54,9 +57,9 @@ fi
 
 cmd="$1"; shift
 
-if [[ "$cmd" =~ ^(new)$ ]]; then
+if [[ "$cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
   loadlib "cmd.$cmd"
-  run "$@"
+  nap_cmd_run "$@"
 else
   fail "unknown command \`$cmd'"
 fi
