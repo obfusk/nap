@@ -2,17 +2,23 @@
 
 # --                                                            # {{{1
 #
-# File        : lib/cmd.new
+# File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-06
+# Date        : 2012-08-07
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
+# Usage: nap_cmd_run <arg(s)>
 function nap_cmd_run () {
-  echo "--> $cmd [$*] <--"
+  echo "--> $nap_cmd [$*] <--"
+}
+
+# Usage: nap_cmd_help
+function nap_cmd_help () {
+  echo ...
 }
 
 # --

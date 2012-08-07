@@ -4,19 +4,24 @@
 #
 # File        : nap
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-06
+# Date        : 2012-08-07
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
-vsn='0.0.0'
-
+  vsn='0.0.0'
 usage='nap ...'
 
+# --
+
+# Usage: die <msg> [<label>]
+# Exits.
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
+# Usage: fail <error(s)>
+# Exits.
 function fail () {
   local x
   for x in "$@"; do echo "error: $x" >&2; done
@@ -30,14 +35,18 @@ source "$rc" || die 'failed to load naprc'
 
 # --
 
+# Usage: findlib <name>
+# Outputs path; returns 0 on success, 1 on failure.
 function findlib () {                                           # {{{1
   local l="$1" x y
   for x in "${NAP_LIBS[@]}"; do
-    y="$x/$l.bash"; if [ -e "$y" ]; then echo "$y"; return 0; fi
+    y="$x/$l.bash"; [ -e "$y" ] && { echo "$y"; return 0; }
   done
   return 1
 }                                                               # }}}1
 
+# Usage: loadlib <name>
+# Sources file; exits on failure.
 function loadlib () {
   local lib="$1" f
   f="$( findlib "$lib" )" || die "failed to find lib for \`$lib'"
@@ -51,15 +60,21 @@ usage="nap { $( nap_cmds ' | ' ) } [ <arg(s)> ]"
 
 # --
 
-if [ "$#" -eq 0 -o "$1" == help ]; then
+if [ "$1" == help ]; then help=y; shift; else help=n; fi
+
+if [ "$#" -eq 0 ]; then
   echo "nap version $vsn"$'\n\n'"usage: $usage"; exit 0
 fi
 
-cmd="$1"; shift
+nap_cmd="$1"; shift
 
-if [[ "$cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
-  loadlib "cmd.$cmd"
-  nap_cmd_run "$@"
+if [[ "$nap_cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
+  loadlib "cmd.$nap_cmd"
+  if [ "$help" == y ]; then
+    nap_cmd_help
+  else
+    nap_cmd_run "$@"
+  fi
 else
   fail "unknown command \`$cmd'"
 fi
