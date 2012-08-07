@@ -12,16 +12,16 @@
 # --                                                            # }}}1
 
   vsn='0.0.0'
-usage='nap ...'
+usage='nap { <command> [<arg(s)>] | help [<command>] }'
 
 # --
 
 # Usage: die <msg> [<label>]
-# Exits.
+# Exits w/ 1.
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
 # Usage: fail <error(s)>
-# Exits.
+# Exits w/ 1.
 function fail () {
   local x
   for x in "$@"; do echo "error: $x" >&2; done
@@ -67,15 +67,12 @@ function loadlib () {
 # --
 
 loadlib nap
-usage="nap { $( nap_cmds ' | ' ) } [ <arg(s)> ]"
 
 # --
 
 if [ "$1" == help ]; then help=y; shift; else help=n; fi
 
-if [ "$#" -eq 0 ]; then
-  echo "nap version $vsn"$'\n\n'"usage: $usage"; exit 0
-fi
+[ "$#" -eq 0 ] && nap_help
 
 nap_cmd="$1"; shift
 

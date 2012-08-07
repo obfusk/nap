@@ -11,7 +11,49 @@
 #
 # --                                                            # }}}1
 
-nap_commands=( new )                                            # TODO
+    cfg_type=
+    cfg_repo=
+
+     cfg_vcs=git
+  cfg_branch=
+
+nap_commands=( new bootstrap )                                  # TODO
+
+# --
+
+# Usage: nap_help
+# Exits w/ 0.
+function nap_help () {                                          # {{{1
+  sed 's!^    !!g' <<__END
+    nap version $vsn
+
+    Usage     : $usage
+    Commmands : $( nap_cmds ', ' )
+__END
+  exit 0
+}                                                               # }}}1
+
+# Usage: validate <str> <rx> <info>
+# Matches <str> to <rx>; handles match failure w/ fail.
+function validate () {
+  local s="$1" rx="$2" info="$3"
+  [[ "$s" =~ ^($rx)$ ]] || fail "$info"
+}
+
+# Usage: nap_mkcfg <file>
+# Writes cfg_* to file.
+#
+# TODO: handle shell metachars !!?
+function nap_mkcfg () {                                         # {{{1
+  local f="$1"
+  sed 's!^    !!g' <<__END > "$f"
+      cfg_type="$cfg_type"
+      cfg_repo="$cfg_repo"
+
+       cfg_vcs="$cfg_vcs"
+    cfg_branch="$cfg_branch"
+__END
+}                                                               # }}}1
 
 # --
 
