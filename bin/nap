@@ -35,6 +35,17 @@ source "$rc" || die 'failed to load naprc'
 
 # --
 
+# Usage: searchlibs <rx>
+# Outputs paths.
+function searchlibs () {                                        # {{{1
+  local rx="$1" x y
+  for x in "${NAP_LIBS[@]}"; do
+    for y in "$x"/*.bash; do
+      [[ "$( basename "$y" )" =~ ^($rx).bash$ ]] && echo "$y"
+    done
+  done
+}                                                               # }}}1
+
 # Usage: findlib <name>
 # Outputs path; returns 0 on success, 1 on failure.
 function findlib () {                                           # {{{1
@@ -76,7 +87,7 @@ if [[ "$nap_cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
     nap_cmd_run "$@"
   fi
 else
-  fail "unknown command \`$cmd'"
+  fail "unknown command \`$nap_cmd'"
 fi
 
 # --

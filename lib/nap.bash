@@ -13,11 +13,25 @@
 
 nap_commands=( new )                                            # TODO
 
+# --
+
+# Usage: join <sep> <arg(s)>
+# Outputs args separated by <sep>; must not contain `|'.
+function join () {
+  local s="$1" IFS='|'; shift; local x="$*"; echo "${x//|/$s}"
+}
+
+# --
+
 # Usage: nap_cmds <sep>
-# Outputs commands separated by <sep>.
-function nap_cmds () {
-  local s="$1" IFS='|'; local x="${nap_commands[*]}"
-  echo "${x//|/$s}"
+# Outputs nap commands separated by <sep>.
+function nap_cmds () { join "$1" "${nap_commands[@]}"; }
+
+# Usage: searchlibs_cat <cat>
+# Outputs names.
+function searchlibs_cat () {
+  local cat="$1"
+  searchlibs "$cat"'\..*' | sed -E 's!^.*/'"$cat"'\.(.*)\.bash$!\1!'
 }
 
 # --
@@ -26,19 +40,30 @@ function nap_cmds () {
 # Example : parse_opts 'foo|bar' foo=99 bar=100
 #
 # Sets cfg_<opt> for each opt parsed; returns 0 on success.
-# Returns 1 and outputs arg on non-parseable arg.
-# Returns 2 and outputs opt on not-recognized opt.
+# Returns 1 and sets $parse_opts_error to arg on non-parseable arg.
+# Returns 2 and sets $parse_opts_error to opt on not-recognized opt.
 #
 # TODO: array opts: cfg_$k+=( \$v ) ???
 
 function parse_opts () {                                        # {{{1
   local ok="$1" x k v; shift
   for x in "$@"; do
-    [[ "$x" =~ ^([a-z]+)=(.*)$ ]] || { echo "$x"; return 1; }
+    [[ "$x" =~ ^([a-z]+)=(.*)$ ]] \
+      || { parse_opts_error="$x"; return 1; }
     k="${BASH_REMATCH[1]}" v="${BASH_REMATCH[2]}"
-    [[ "$k" =~ ^($ok)$ ]]         || { echo "$k"; return 2; }
+    [[ "$k" =~ ^($ok)$ ]] \
+      || { parse_opts_error="$k"; return 2; }
     eval "cfg_$k=\$v"
   done
+}                                                               # }}}1
+
+# Usage: parse_opts_handled <opt-rx> <arg(s)>
+# Runs parse_opts; handles errors w/ fail.
+function parse_opts_handled () {                                # {{{1
+  local ok="$1" e; shift
+  parse_opts "$ok" "$@"; e="$?"
+  [ "$e" -eq 1 ] && fail "malformed option: \`$parse_opts_error'"
+  [ "$e" -eq 2 ] && fail "unknown option: \`$parse_opts_error'"
 }                                                               # }}}1
 
 # --

@@ -1,9 +1,7 @@
 # --
 
-     NAP_DIR=.                    # /__nap
+     NAP_DIR=. # /__nap
 NAP_APPS_DIR=/__apps
-      NAP_OS=osx                  # ubuntu
-
     NAP_LIBS=( "$NAP_DIR"/lib )
 
 # --
