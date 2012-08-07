@@ -22,11 +22,11 @@ function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
 # Usage: fail <error(s)>
 # Exits w/ 1.
-function fail () {
+function fail () {                                              # {{{1
   local x
   for x in "$@"; do echo "error: $x" >&2; done
   die "$usage" usage
-}
+}                                                               # }}}1
 
 # --
 
@@ -58,11 +58,11 @@ function findlib () {                                           # {{{1
 
 # Usage: loadlib <name>
 # Sources file; exits on failure.
-function loadlib () {
+function loadlib () {                                           # {{{1
   local lib="$1" f
   f="$( findlib "$lib" )" || die "failed to find lib for \`$lib'"
   source "$f"             || die "failed to load lib for \`$lib'"
-}
+}                                                               # }}}1
 
 # --
 
@@ -71,9 +71,7 @@ loadlib nap
 # --
 
 if [ "$1" == help ]; then help=y; shift; else help=n; fi
-
 [ "$#" -eq 0 ] && nap_help
-
 nap_cmd="$1"; shift
 
 if [[ "$nap_cmd" =~ ^($( nap_cmds '|' ))$ ]]; then

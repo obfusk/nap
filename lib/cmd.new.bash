@@ -35,9 +35,9 @@ function nap_cmd_run () {                                       # {{{1
   loadlib "type.$cfg_type"
   loadlib "vcs.$cfg_vcs"
 
-  mkdir -p "$app" || die "TODO"
-  nap_vcs_clone "$cfg_repo" "$app/app" $cfg_branch || die "TODO"
-  nap_mkcfg "$app/cfg"
+  mkdir -p "$app"                                   || die "TODO"
+  nap_vcs_clone "$cfg_repo" "$app/app" $cfg_branch  || die "TODO"
+  nap_mkcfg "$app/cfg"                              || die "TODO"
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

@@ -21,8 +21,34 @@ nap_commands=( new bootstrap )                                  # TODO
 
 # --
 
+# Usage: validate <str> <rx> <info>
+# Matches <str> to <rx>; handles match failure w/ fail.
+function validate () {                                          # {{{1
+  local s="$1" rx="$2" info="$3"
+  [[ "$s" =~ ^($rx)$ ]] || fail "$info"
+}                                                               # }}}1
+
+# Usage: join <sep> <arg(s)>
+# Outputs args separated by <sep>; must not contain `|'.
+function join () {                                              # {{{1
+  local s="$1" IFS='|'; shift; local x="$*"; echo "${x//|/$s}"
+}                                                               # }}}1
+
+# --
+
+# Usage: searchlibs_cat <cat>
+# Outputs names.
+function searchlibs_cat () {                                    # {{{1
+  local cat="$1"
+  searchlibs "$cat"'\..*' | sed -E 's!^.*/'"$cat"'\.(.*)\.bash$!\1!'
+}                                                               # }}}1
+
+# Usage: nap_cmds <sep>
+# Outputs nap commands separated by <sep>.
+function nap_cmds () { join "$1" "${nap_commands[@]}"; }
+
 # Usage: nap_help
-# Exits w/ 0.
+# Outputs help; exits w/ 0.
 function nap_help () {                                          # {{{1
   sed 's!^    !!g' <<__END
     nap version $vsn
@@ -33,15 +59,8 @@ __END
   exit 0
 }                                                               # }}}1
 
-# Usage: validate <str> <rx> <info>
-# Matches <str> to <rx>; handles match failure w/ fail.
-function validate () {
-  local s="$1" rx="$2" info="$3"
-  [[ "$s" =~ ^($rx)$ ]] || fail "$info"
-}
-
 # Usage: nap_mkcfg <file>
-# Writes cfg_* to file.
+# Writes cfg_* to file; returns non-zero on failure.
 #
 # TODO: handle shell metachars !!?
 function nap_mkcfg () {                                         # {{{1
@@ -54,27 +73,6 @@ function nap_mkcfg () {                                         # {{{1
     cfg_branch="$cfg_branch"
 __END
 }                                                               # }}}1
-
-# --
-
-# Usage: join <sep> <arg(s)>
-# Outputs args separated by <sep>; must not contain `|'.
-function join () {
-  local s="$1" IFS='|'; shift; local x="$*"; echo "${x//|/$s}"
-}
-
-# --
-
-# Usage: nap_cmds <sep>
-# Outputs nap commands separated by <sep>.
-function nap_cmds () { join "$1" "${nap_commands[@]}"; }
-
-# Usage: searchlibs_cat <cat>
-# Outputs names.
-function searchlibs_cat () {
-  local cat="$1"
-  searchlibs "$cat"'\..*' | sed -E 's!^.*/'"$cat"'\.(.*)\.bash$!\1!'
-}
 
 # --
 
