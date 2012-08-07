@@ -16,21 +16,21 @@ nap_cmd_usage='nap new <name> <type> <repo> [<opt(s)>]'
 # --
 
 # Usage: nap_cmd_run <arg(s)>
-# ...
+# Parses opts; loads libs; makes app w/ clone, cfg.
 function nap_cmd_run () {                                       # {{{1
   local usage="$nap_cmd_usage"
   [ "$#" -ge 3 ] || die "$usage" usage
   local name="$1"; cfg_type="$2" cfg_repo="$3"; shift 3
   parse_opts_handled 'vcs|branch' "$@"
 
-  validate "$name"        '[a-z_-]+'        'invalid name'
-  validate "$cfg_type"    '[a-z_-]+'        'invalid type'
-  validate "$cfg_repo"    '[a-zA-Z@.:/_-]+' 'invalid repo'
-  validate "$cfg_vcs"     '[a-z_-]+'        'invalid vcs'
-  validate "$cfg_branch"  '[a-z_-]*'        'invalid branch'
+  validate "$name"        "$chk_word" 'invalid name'
+  validate "$cfg_type"    "$chk_word" 'invalid type'
+  validate "$cfg_repo"    "$chk_url"  'invalid repo'
+  validate "$cfg_vcs"     "$chk_word" 'invalid vcs'
+  validate "$cfg_branch"  "$chk_wnil" 'invalid branch'
 
   local app="$NAP_APPS_DIR/$name"
-  [ -e "$app" ] && die "app \`$app' already exists"
+  [ -e "$app" ] && die "app \`$name' already exists"
 
   loadlib "type.$cfg_type"
   loadlib "vcs.$cfg_vcs"

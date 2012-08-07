@@ -17,7 +17,15 @@
      cfg_vcs=git
   cfg_branch=
 
+# --
+
 nap_commands=( new bootstrap )                                  # TODO
+
+# --
+
+chk_word='[a-z0-9_-]+'
+chk_wnil='[a-z0-9_-]*'
+ chk_url='[a-z0-9A-Z@.:/_-]+'
 
 # --
 
@@ -66,11 +74,11 @@ __END
 function nap_mkcfg () {                                         # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
-      cfg_type="$cfg_type"
-      cfg_repo="$cfg_repo"
+      cfg_type=$cfg_type
+      cfg_repo=$cfg_repo
 
-       cfg_vcs="$cfg_vcs"
-    cfg_branch="$cfg_branch"
+       cfg_vcs=$cfg_vcs
+    cfg_branch=$cfg_branch
 __END
 }                                                               # }}}1
 
