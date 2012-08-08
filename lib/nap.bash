@@ -11,13 +11,21 @@
 #
 # --                                                            # }}}1
 
-    cfg_name=
+         nap_app=
+     nap_app_app=
+     nap_app_cfg=
+     nap_app_log=
+ nap_app_cfgfile=
 
-    cfg_type=
-    cfg_repo=
+# --
 
-     cfg_vcs=git
-  cfg_branch=
+        cfg_name=
+
+        cfg_type=
+        cfg_repo=
+
+         cfg_vcs=git
+      cfg_branch=
 
 # --
 
@@ -46,6 +54,8 @@ fi                                                              # }}}1
 chk_word='[a-z0-9_-]+'
 chk_wnil='[a-z0-9_-]*'
  chk_url='[a-z0-9A-Z@.:/_-]+'
+chk_host='[a-z0-9.-]+'
+chk_port='[0-9]+'
 
 # --
 
@@ -102,6 +112,16 @@ function join () {                                              # {{{1
 
 # --
 
+# Usage: nap_app_set
+# Sets nap_app*.
+function nap_app_set () {                                       # {{{1
+         nap_app="$NAP_APPS_DIR/$cfg_name"
+     nap_app_app="$nap_app/app"
+     nap_app_cfg="$nap_app/cfg"
+     nap_app_log="$nap_app/log"
+ nap_app_cfgfile="$nap_app_cfg/nap.bash"
+}                                                               # }}}1
+
 # Usage: searchlibs_cat <cat>
 # Outputs names.
 function searchlibs_cat () {                                    # {{{1
@@ -132,11 +152,22 @@ __END
 function nap_mkcfg () {                                         # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
+    # the basics
+
       cfg_type=$cfg_type
       cfg_repo=$cfg_repo
 
        cfg_vcs=$cfg_vcs
     cfg_branch=$cfg_branch
+
+    # the specifics
+
+    $(  for x in "${nap_type_opts[@]}"; do
+          eval "y=\$cfg_${cfg_type}_$x"
+          echo "cfg_${cfg_type}_$x=$y"
+        done  )
+
+    # --
 __END
 }                                                               # }}}1
 
@@ -154,12 +185,12 @@ __END
 function parse_opts () {                                        # {{{1
   local ok="$1" x k v; shift
   for x in "$@"; do
-    [[ "$x" =~ ^([a-z]+)=(.*)$ ]] \
+    [[ "$x" =~ ^([a-z.]+)=(.*)$ ]] \
       || { parse_opts_error="$x"; return 1; }
     k="${BASH_REMATCH[1]}" v="${BASH_REMATCH[2]}"
     [[ "$k" =~ ^($ok)$ ]] \
       || { parse_opts_error="$k"; return 2; }
-    eval "cfg_$k=\$v"
+    eval "cfg_${k//./_}=\$v"
   done
 }                                                               # }}}1
 

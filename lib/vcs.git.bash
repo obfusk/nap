@@ -11,8 +11,6 @@
 #
 # --                                                            # }}}1
 
-# --
-
 # Usage: nap_vcs_clone <repo> <dir> [<branch>]
 # Clones repo to dir (w/ default branch); returns non-zero on failure.
 function nap_vcs_clone () {                                     # {{{1

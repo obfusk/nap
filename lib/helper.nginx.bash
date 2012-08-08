@@ -11,8 +11,6 @@
 #
 # --                                                            # }}}1
 
-# --
-
 # Usage: nap_helper_nginx_mkcfg <file>
 # Writes config file; returns non-zero on failure.
 # Uses $cfg_nginx_{server,log,host,port}, $cfg_name.
@@ -32,6 +30,8 @@ function nap_helper_nginx_mkcfg () {                            # {{{1
     }
 __END
 }                                                               # }}}1
+
+# ...
 
 # --
 

@@ -54,6 +54,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ sudo git clone https://github.com/obfusk/nap.git /__nap/nap
       # TODO
+
+      ...
                                                                   }}}3
 
     === nginx ===                                                 {{{3
@@ -62,15 +64,18 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ rm -i /etc/nginx/sites-enabled/default
 
-      $ vim ...
-      # ...
+      $ vim ... # ...
 
       $ service nginx start   # also: restart
+
+      ...
                                                                   }}}3
 
     === clojure ===                                               {{{3
 
       $ aptitude install leiningen
+
+      ...
                                                                   }}}3
 
     === gitolite ===                                              {{{3
@@ -78,6 +83,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ aptitude install gitolite
 
       $ dpkg-reconfigure gitolite   # user: git; repo: /__git
+
+      ...
                                                                   }}}3
                                                                   }}}2
 
@@ -85,6 +92,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     $ byobu-select-backend          # screen; ^a too
     $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
+
+    ...
                                                                   }}}2
                                                                   }}}1
 
