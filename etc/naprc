@@ -1,7 +1,0 @@
-# --
-
-     NAP_DIR=.                    # /__nap
-NAP_APPS_DIR="$HOME"/tmp/__apps   # /__apps
-    NAP_LIBS=( "$NAP_DIR"/lib )
-
-# --

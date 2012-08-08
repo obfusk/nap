@@ -2,9 +2,9 @@
 
 # --                                                            # {{{1
 #
-# File        : lib/type.test.bash
+# File        : lib/type.todo.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-07
+# Date        : 2012-08-09
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2

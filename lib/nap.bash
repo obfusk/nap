@@ -4,12 +4,14 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-07
+# Date        : 2012-08-09
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
+
+    cfg_name=
 
     cfg_type=
     cfg_repo=
@@ -23,9 +25,65 @@ nap_commands=( new bootstrap )                                  # TODO
 
 # --
 
+if [ "$( tty )" == 'not a tty' ]; then                          # {{{1
+  is_tty=n
+
+  colour_blu=
+  colour_whi=
+  colour_red=
+  colour_non=
+else
+  is_tty=y
+
+  colour_blu='\033[1;34m'
+  colour_whi='\033[1;37m'
+  colour_red='\033[1;31m'
+  colour_non='\033[0m'
+fi                                                              # }}}1
+
+# --
+
 chk_word='[a-z0-9_-]+'
 chk_wnil='[a-z0-9_-]*'
  chk_url='[a-z0-9A-Z@.:/_-]+'
+
+# --
+
+# Usage: ohai <msg>
+# Echoes "==> msg"; uses $colour_*.
+function ohai () {                                              # {{{1
+  local msg="$1"
+  echo -e "${colour_blu}==>${colour_whi} ${msg}${colour_non}"
+}                                                               # }}}1
+
+# Usage: onoe <msg> [<label>]
+# Echoes "Error: msg"; label replaces Error; uses $colour_*.
+function onoe () {                                              # {{{1
+  local msg="$1" label="${2:-Error}"
+  echo -e "${colour_red}${label}${colour_non}: ${msg}"
+}                                                               # }}}1
+
+# Usage: die <msg> [<label>]
+# Exits w/ 1; uses onoe; replaces die from bin/nap.
+function die () {                                               # {{{1
+  onoe "$@"; exit 1
+}                                                               # }}}1
+
+# --
+
+# Usage: try <msg> <cmd> <arg(s)>
+# Runs cmd w/ args; runs $try_func (or die) w/ msg on failure.
+function try () {                                               # {{{1
+  local msg="$1"; shift
+  "$@" || "${try_func:-die}" "$msg"
+}                                                               # }}}1
+
+# Usage: try_q <msg> <cmd> <arg(s)>
+# Like try, but redirects stderr to $try_stderr (or /dev/null).
+function try_q () {                                             # {{{1
+  local msg="$1"; shift
+  "$@" 2>"${try_stderr:-/dev/null}" || "${try_func:-die}" "$msg"
+}                                                               # }}}1
 
 # --
 

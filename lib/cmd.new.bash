@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-07
+# Date        : 2012-08-09
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -20,24 +20,31 @@ nap_cmd_usage='nap new <name> <type> <repo> [<opt(s)>]'
 function nap_cmd_run () {                                       # {{{1
   local usage="$nap_cmd_usage"
   [ "$#" -ge 3 ] || die "$usage" usage
-  local name="$1"; cfg_type="$2" cfg_repo="$3"; shift 3
+  cfg_name="$1" cfg_type="$2" cfg_repo="$3"; shift 3
   parse_opts_handled 'vcs|branch' "$@"
 
-  validate "$name"        "$chk_word" 'invalid name'
+  validate "$cfg_name"    "$chk_word" 'invalid name'
   validate "$cfg_type"    "$chk_word" 'invalid type'
   validate "$cfg_repo"    "$chk_url"  'invalid repo'
   validate "$cfg_vcs"     "$chk_word" 'invalid vcs'
   validate "$cfg_branch"  "$chk_wnil" 'invalid branch'
 
-  local app="$NAP_APPS_DIR/$name"
-  [ -e "$app" ] && die "app \`$name' already exists"
+  local app="$NAP_APPS_DIR/$cfg_name"
+  [ -e "$app" ] && die "app \`$cfg_name' already exists"
 
   loadlib "type.$cfg_type"
   loadlib "vcs.$cfg_vcs"
 
-  mkdir -p "$app"                                   || die "TODO"
-  nap_vcs_clone "$cfg_repo" "$app/app" $cfg_branch  || die "TODO"
-  nap_mkcfg "$app/cfg"                              || die "TODO"
+  ohai "creating new app \`$cfg_name' ..."
+  try 'mkdir failed' mkdir -p "$app"
+
+  ohai 'cloning repository ...'
+  try 'clone failed' nap_vcs_clone "$cfg_repo" "$app/app" $cfg_branch
+
+  ohai 'creating configuration ...'
+  try 'mkcfg failed' nap_mkcfg "$app/cfg"
+
+  ohai 'done.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

@@ -1,0 +1,9 @@
+# --
+
+     NAP_DIR=/__nap/nap
+NAP_APPS_DIR=/__nap/apps
+ NAP_CFG_DIR=/__nap/cfg
+
+    NAP_LIBS=( "$NAP_DIR"/lib )
+
+# --
