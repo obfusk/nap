@@ -18,6 +18,16 @@ function nap_vcs_clone () {                                     # {{{1
   git clone ${b:+-b "$b"} "$repo" "$dir"
 }                                                               # }}}1
 
+# Usage: nap_vcs_pull <dir> [<branch>]
+# Pulls origin/branch; returns non-zero on git failure.
+function nap_vcs_pull () {                                      # {{{1
+  local dir="$1" b="$2" r
+  dpush "$dir"
+    git pull origin "${b:-master}"; r="$?"
+  dpop
+  return "$r"
+}                                                               # }}}1
+
 # ...
 
 # --
