@@ -11,7 +11,9 @@
 #
 # --                                                            # }}}1
 
-exec sudo -u nap nap-update "$PWD"
+# TODO: check before sudo ???
+
+exec sudo -u nap nap-update "$PWD" maybe
 
 # --
 

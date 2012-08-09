@@ -16,8 +16,9 @@ function die () { echo "${2:-error}: $1" >&2; exit 1; }
 rc="${NAPRC:-/etc/naprc}"
 source "$rc" || die 'failed to load naprc'
 
-[ "$#" -eq 1 ] || die 'nap-update <repo>' usage
-repo="$1"
+[ "$#" -eq 1 ] || [ "$#" -eq 2 -a "$2" == maybe ] \
+  || die 'nap-update <repo> [maybe]' usage
+repo="$1" maybe="$2"
 
 # --
 
@@ -25,7 +26,7 @@ while read -r repo_ app; do
   [ "$repo" == "$repo_" ] && exec nap update "$app"
 done < "$NAPPS_FILE"
 
-die "repo \`$repo' not found"
+[ "$maybe" == maybe ] || die "repo \`$repo' not found"
 
 # --
 
