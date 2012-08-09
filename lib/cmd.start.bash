@@ -18,7 +18,7 @@ loadlib 'cmd._defaults'
 # --
 
 # Usage: nap_cmd_run <arg(s)>
-# Runs nap_cmd_run_prepare_d; loads libs, cfg; bootstraps app.
+# Runs nap_cmd_run_prepare_d; loads libs, cfg; starts app.
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
