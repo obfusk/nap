@@ -13,7 +13,7 @@
 
 # === cfg vars ===                                              # {{{1
 
-   nap_commands=( new bootstrap start stop )                    # TODO
+   nap_commands=( new bootstrap update start stop )             # TODO
        nap_cfgs=( type repo vcs branch )
 
         nap_app=
