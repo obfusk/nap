@@ -27,6 +27,7 @@ function nap_cmd_run () {                                       # {{{1
   ohai 'loading configuration ...'
   source "$nap_app_cfgfile" || die 'loadcfg failed'
   loadlib "type.$cfg_type"
+  loadlib "vcs.$cfg_vcs"
 
   nap_type_stop
   ohai 'updating repository ...'
