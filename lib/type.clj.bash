@@ -70,6 +70,7 @@ function nap_type_start () {                                    # {{{1
     local pid=$!
   dpop
   try 'mkpid failed' nap_mkpid "$nap_app_pidfile" "$pid"
+  sleep 7; kill -0 "$pid" 2>/dev/null || die 'process died'
 }                                                               # }}}1
 
 # Usage: nap_type_stop
