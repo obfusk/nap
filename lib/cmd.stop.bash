@@ -2,7 +2,7 @@
 
 # --                                                            # {{{1
 #
-# File        : lib/cmd.bootstrap.bash
+# File        : lib/cmd.stop.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2012-08-09
 #
@@ -11,7 +11,7 @@
 #
 # --                                                            # }}}1
 
-nap_cmd_usage='nap bootstrap <name>'
+nap_cmd_usage='nap stop <name>'
 
 # --
 
@@ -33,17 +33,15 @@ function nap_cmd_run_prepare () {                               # {{{1
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare "$@"
 
-  ohai "bootstapping \`$cfg_name' ..."
+  ohai "stopping \`$cfg_name' ..."
 
   ohai 'loading configuration ...'
   source "$nap_app_cfgfile" || die 'loadcfg failed'
 
   loadlib "type.$cfg_type"
 
-  nap_type_bootstrap
-  nap_type_install_deps
+  nap_type_stop
   ohai 'done.'
-  nap_type_bootstrap_info
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

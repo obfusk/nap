@@ -15,9 +15,9 @@ nap_cmd_usage='nap new <name> <type> <repo> [<opt(s)>]'
 
 # --
 
-# Usage: nap_cmd_run_new_prepare <arg(s)>
+# Usage: nap_cmd_run_prepare <arg(s)>
 # Parses opts; loads libs.
-function nap_cmd_run_new_prepare () {                           # {{{1
+function nap_cmd_run_prepare () {                               # {{{1
   local usage="$nap_cmd_usage"
   [ "$#" -ge 3 ] || die "$usage" usage
   cfg_name="$1" cfg_type="$2" cfg_repo="$3"; shift 3
@@ -47,9 +47,9 @@ function nap_cmd_run_new_prepare () {                           # {{{1
 }                                                               # }}}1
 
 # Usage: nap_cmd_run <arg(s)>
-# Runs nap_cmd_run_new_prepare; makes app w/ clone, cfg.
+# Runs nap_cmd_run_prepare; makes app w/ clone, cfg.
 function nap_cmd_run () {                                       # {{{1
-  nap_cmd_run_new_prepare "$@"
+  nap_cmd_run_prepare "$@"
 
   ohai "creating new app \`$cfg_name' ..."
 

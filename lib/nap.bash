@@ -13,7 +13,7 @@
 
 # === cfg vars ===                                              # {{{1
 
-   nap_commands=( new bootstrap )                               # TODO
+   nap_commands=( new bootstrap start stop )                    # TODO
        nap_cfgs=( type repo vcs branch )
 
         nap_app=
@@ -21,6 +21,7 @@
     nap_app_cfg=
     nap_app_log=
 nap_app_cfgfile=
+nap_app_pidfile=
 
        cfg_name=
        cfg_type=
@@ -68,6 +69,7 @@ function nap_app_set () {                                       # {{{1
      nap_app_cfg="$nap_app/cfg"
      nap_app_log="$nap_app/log"
  nap_app_cfgfile="$nap_app_cfg/nap.bash"
+ nap_app_pidfile="$nap_app_log/pid"                             # TODO
 }                                                               # }}}1
 
 # --
@@ -107,6 +109,14 @@ function try_q () {                                             # {{{1
   local msg="$1"; shift
   "$@" 2>"${try_stderr:-/dev/null}" || "${try_func:-die}" "$msg"
 }                                                               # }}}1
+
+# --
+
+function pushd_q  () { pushd "$1" > /dev/null; }
+function popd_q   () { popd       > /dev/null; }
+
+function dpush    () { try 'pushd failed' pushd_q "$1"; }
+function dpop     () { try 'popd failed'  popd_q      ; }
 
 # --
 
@@ -171,6 +181,13 @@ function nap_mkcfg () {                                         # {{{1
 
     # --
 __END
+}                                                               # }}}1
+
+# Usage: nap_mkpid <file> <pid>
+# Writes pid to file; returns non-zero on failure.
+function nap_mkpid () {                                         # {{{1
+  local f="$1" pid="$2"
+  echo "$pid" > "$f"
 }                                                               # }}}1
 
 # --
