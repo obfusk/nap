@@ -4,6 +4,8 @@
 NAP_APPS_DIR=/__nap/apps
  NAP_CFG_DIR=/__nap/cfg
 
+  NAPPS_FILE="$NAP_CFG_DIR"/napps
+
     NAP_LIBS=( "$NAP_DIR"/lib )
 
 # --
