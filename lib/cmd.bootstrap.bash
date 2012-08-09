@@ -22,15 +22,15 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  ohai "bootstapping \`$cfg_name' ..."
+  ohai "[bootstap] \`$cfg_name'"
 
-  ohai 'loading configuration ...'
-  source "$nap_app_cfgfile" || die 'loadcfg failed'
+  ohai '[loadcfg]'
+  source "$nap_app_cfgfile" || die '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_type_bootstrap
   nap_type_install_deps
-  ohai 'done.'
+  ohai '[done]'
   nap_type_bootstrap_info
 }                                                               # }}}1
 

@@ -28,8 +28,6 @@ function nap_vcs_pull () {                                      # {{{1
   return "$r"
 }                                                               # }}}1
 
-# ...
-
 # --
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :

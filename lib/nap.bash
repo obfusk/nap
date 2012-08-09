@@ -90,9 +90,7 @@ function onoe () {                                              # {{{1
 
 # Usage: die <msg> [<label>]
 # Exits w/ 1; uses onoe; replaces die from bin/nap.
-function die () {                                               # {{{1
-  onoe "$@"; exit 1
-}                                                               # }}}1
+function die () { onoe "$@"; exit 1; }
 
 # --
 
@@ -115,8 +113,8 @@ function try_q () {                                             # {{{1
 function pushd_q  () { pushd "$1" > /dev/null; }
 function popd_q   () { popd       > /dev/null; }
 
-function dpush    () { try 'pushd failed' pushd_q "$1"; }
-function dpop     () { try 'popd failed'  popd_q      ; }
+function dpush    () { try '[pushd] failed' pushd_q "$1"; }
+function dpop     () { try '[popd] failed'  popd_q      ; }
 
 # --
 
@@ -185,10 +183,7 @@ __END
 
 # Usage: nap_mkpid <file> <pid>
 # Writes pid to file; returns non-zero on failure.
-function nap_mkpid () {                                         # {{{1
-  local f="$1" pid="$2"
-  echo "$pid" > "$f"
-}                                                               # }}}1
+function nap_mkpid () { local f="$1" pid="$2"; echo "$pid" > "$f"; }
 
 # --
 

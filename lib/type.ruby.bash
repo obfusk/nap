@@ -43,7 +43,7 @@ function nap_type_bootstrap () {                                # {{{1
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
-  ohai 'caveats'
+  ohai 'Caveats'
   nap_helper_nginx_info "ruby ($cfg_ruby_command)" \
     "$nap_helper_daemon_nginx_conf"
 }                                                               # }}}1

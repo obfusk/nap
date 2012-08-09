@@ -2,7 +2,7 @@
 
 # --                                                            # {{{1
 #
-# File        : etc/git-post-update-hook.sample
+# File        : git-post-update-hook.sample
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2012-08-09
 #

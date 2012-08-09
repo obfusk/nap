@@ -53,8 +53,6 @@ function nap_helper_nginx_info () {                             # {{{1
 __END
 }                                                               # }}}1
 
-# ...
-
 # --
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :

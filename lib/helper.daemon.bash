@@ -74,8 +74,8 @@ function nap_helper_daemon_stop () {                            # {{{1
   pid="$( cat "$nap_app_pidfile" )"
   [ -n "$pid" ] || die '[getpid] failed'
 
-  ohai "killing $info"
-  try 'kill failed' kill "$pid"
+  ohai "[kill] $info"
+  try '[kill] failed' kill "$pid"
   try '[rmpid] failed' rm "$nap_app_pidfile"
 }                                                               # }}}1
 

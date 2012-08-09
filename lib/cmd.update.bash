@@ -22,19 +22,19 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  ohai "updating \`$cfg_name' ..."
+  ohai "[update] \`$cfg_name'"
 
-  ohai 'loading configuration ...'
-  source "$nap_app_cfgfile" || die 'loadcfg failed'
+  ohai '[loadcfg]'
+  source "$nap_app_cfgfile" || die '[loadcfg] failed'
   loadlib "type.$cfg_type"
   loadlib "vcs.$cfg_vcs"
 
   nap_type_stop
-  ohai 'updating repository ...'
-  try 'pull failed' nap_vcs_pull "$nap_app_app" $cfg_branch
+  ohai '[pull repo]'
+  try '[pull repo] failed' nap_vcs_pull "$nap_app_app" $cfg_branch
   nap_type_install_deps
   nap_type_start
-  ohai 'done.'
+  ohai '[done]'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

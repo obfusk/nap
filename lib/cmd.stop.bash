@@ -22,14 +22,14 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  ohai "stopping \`$cfg_name' ..."
+  ohai "[stop] \`$cfg_name'"
 
-  ohai 'loading configuration ...'
-  source "$nap_app_cfgfile" || die 'loadcfg failed'
+  ohai '[loadcfg]'
+  source "$nap_app_cfgfile" || die '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_type_stop
-  ohai 'done.'
+  ohai '[done]'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

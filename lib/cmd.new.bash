@@ -51,20 +51,20 @@ function nap_cmd_run_prepare () {                               # {{{1
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare "$@"
 
-  ohai "creating new app \`$cfg_name' ..."
+  ohai "[new app] \`$cfg_name'"
 
-  try 'mkdir failed'     mkdir "$nap_app"
-  try 'mkdir cfg failed' mkdir "$nap_app_cfg"
-  try 'mkdir log failed' mkdir "$nap_app_log"
+  try '[mkdir] failed'      mkdir "$nap_app"
+  try '[mkdir cfg] failed'  mkdir "$nap_app_cfg"
+  try '[mkdir log] failed'  mkdir "$nap_app_log"
 
-  ohai 'cloning repository ...'
-  try 'clone failed' nap_vcs_clone "$cfg_repo" "$nap_app_app" \
-    $cfg_branch
+  ohai '[clone repo]'
+  try '[clone repo] failed' nap_vcs_clone \
+    "$cfg_repo" "$nap_app_app" $cfg_branch
 
-  ohai 'creating configuration ...'
-  try 'mkcfg failed' nap_mkcfg "$nap_app_cfgfile"
+  ohai '[mkcfg]'
+  try '[mkcfg] failed' nap_mkcfg "$nap_app_cfgfile"
 
-  ohai 'done.'
+  ohai '[done]'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help
