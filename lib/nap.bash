@@ -11,25 +11,23 @@
 #
 # --                                                            # }}}1
 
-         nap_app=
-     nap_app_app=
-     nap_app_cfg=
-     nap_app_log=
- nap_app_cfgfile=
+# === cfg vars ===                                              # {{{1
 
-# --
+   nap_commands=( new bootstrap )                               # TODO
+       nap_cfgs=( type repo vcs branch )
 
-        cfg_name=
+        nap_app=
+    nap_app_app=
+    nap_app_cfg=
+    nap_app_log=
+nap_app_cfgfile=
 
-        cfg_type=
-        cfg_repo=
-
-         cfg_vcs=git
-      cfg_branch=
-
-# --
-
-nap_commands=( new bootstrap )                                  # TODO
+       cfg_name=
+       cfg_type=
+       cfg_repo=
+        cfg_vcs=git
+     cfg_branch=
+                                                                # }}}1
 
 # --
 
@@ -51,11 +49,26 @@ fi                                                              # }}}1
 
 # --
 
+# === ckh_* ===                                                 # {{{1
+
 chk_word='[a-z0-9_-]+'
 chk_wnil='[a-z0-9_-]*'
  chk_url='[a-z0-9A-Z@.:/_-]+'
 chk_host='[a-z0-9.-]+'
 chk_port='[0-9]+'
+                                                                # }}}1
+
+# --
+
+# Usage: nap_app_set
+# Sets nap_app*.
+function nap_app_set () {                                       # {{{1
+         nap_app="$NAP_APPS_DIR/$cfg_name"
+     nap_app_app="$nap_app/app"
+     nap_app_cfg="$nap_app/cfg"
+     nap_app_log="$nap_app/log"
+ nap_app_cfgfile="$nap_app_cfg/nap.bash"
+}                                                               # }}}1
 
 # --
 
@@ -112,16 +125,6 @@ function join () {                                              # {{{1
 
 # --
 
-# Usage: nap_app_set
-# Sets nap_app*.
-function nap_app_set () {                                       # {{{1
-         nap_app="$NAP_APPS_DIR/$cfg_name"
-     nap_app_app="$nap_app/app"
-     nap_app_cfg="$nap_app/cfg"
-     nap_app_log="$nap_app/log"
- nap_app_cfgfile="$nap_app_cfg/nap.bash"
-}                                                               # }}}1
-
 # Usage: searchlibs_cat <cat>
 # Outputs names.
 function searchlibs_cat () {                                    # {{{1
@@ -154,11 +157,10 @@ function nap_mkcfg () {                                         # {{{1
   sed 's!^    !!g' <<__END > "$f"
     # the basics
 
-      cfg_type=$cfg_type
-      cfg_repo=$cfg_repo
-
-       cfg_vcs=$cfg_vcs
-    cfg_branch=$cfg_branch
+    $(  for x in "${nap_cfgs[@]}"; do
+          eval "y=\$cfg_$x"
+          echo "cfg_$x=$y"
+        done  )
 
     # the specifics
 
