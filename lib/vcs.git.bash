@@ -4,7 +4,7 @@
 #
 # File        : lib/vcs.git.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-07
+# Date        : 2012-08-09
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -14,7 +14,7 @@
 # Usage: nap_vcs_clone <repo> <dir> [<branch>]
 # Clones repo to dir (w/ default branch); returns non-zero on failure.
 function nap_vcs_clone () {                                     # {{{1
-  local repo="$1" dir="$2" b="$3" b
+  local repo="$1" dir="$2" b="$3"
   git clone ${b:+-b "$b"} "$repo" "$dir"
 }                                                               # }}}1
 

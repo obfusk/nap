@@ -13,31 +13,19 @@
 
 nap_cmd_usage='nap bootstrap <name>'
 
+loadlib 'cmd._defaults'
+
 # --
 
-# Usage: nap_cmd_run_prepare <arg(s)>
-# Parses opts.
-function nap_cmd_run_prepare () {                               # {{{1
-  local usage="$nap_cmd_usage"
-  [ "$#" -eq 1 ] || die "$usage" usage
-  cfg_name="$1"; shift
-
-  validate "$cfg_name" "$chk_word" 'invalid name'
-
-  nap_app_set
-  [ -e "$nap_app" ] || die "app \`$cfg_name' does not exist"
-}                                                               # }}}1
-
 # Usage: nap_cmd_run <arg(s)>
-# Runs nap_cmd_run_prepare; loads libs, cfg; bootstraps app.
+# Runs nap_cmd_run_prepare_d; loads libs, cfg; bootstraps app.
 function nap_cmd_run () {                                       # {{{1
-  nap_cmd_run_prepare "$@"
+  nap_cmd_run_prepare_d 1 1 "$@"
 
   ohai "bootstapping \`$cfg_name' ..."
 
   ohai 'loading configuration ...'
   source "$nap_app_cfgfile" || die 'loadcfg failed'
-
   loadlib "type.$cfg_type"
 
   nap_type_bootstrap
@@ -48,11 +36,7 @@ function nap_cmd_run () {                                       # {{{1
 
 # Usage: nap_cmd_help
 # Outputs help.
-function nap_cmd_help () {                                      # {{{1
-  sed 's!^    !!g' <<__END
-    Usage: $nap_cmd_usage
-__END
-}                                                               # }}}1
+function nap_cmd_help () { nap_cmd_help_d; }
 
 # --
 
