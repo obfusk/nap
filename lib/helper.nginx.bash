@@ -31,6 +31,20 @@ function nap_helper_nginx_mkcfg () {                            # {{{1
 __END
 }                                                               # }}}1
 
+# Usage: nap_helper_nginx_info <type> <file>
+# Outputs info.
+function nap_helper_nginx_info () {                             # {{{1
+  local t="$1" f="$2"
+  sed 's!^    !!g' <<__END
+    Your $t app has been bootstrapped.
+    You now need to copy the nginx.conf file to the appropriate
+    location:
+      $ cp $f /path/to/nginx/conf/
+    And restart nginx:
+      $ service nginx restart
+__END
+}                                                               # }}}1
+
 # ...
 
 # --
