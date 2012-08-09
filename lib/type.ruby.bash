@@ -2,7 +2,7 @@
 
 # --                                                            # {{{1
 #
-# File        : lib/type.uni.bash
+# File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2012-08-09
 #
@@ -11,16 +11,16 @@
 #
 # --                                                            # }}}1
 
-     nap_type_opts=( server port )
-nap_type_uni_nginx=
+      nap_type_opts=( server port )
+nap_type_ruby_nginx=
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_uni_*.
+# Validates cfg_ruby_*.
 function nap_type_validate_opts () {                            # {{{1
-  validate "$cfg_uni_server"  "$chk_host" 'invalid uni.server'
-  validate "$cfg_uni_port"    "$chk_port" 'invalid uni.port'
+  validate "$cfg_ruby_server" "$chk_host" 'invalid ruby.server'
+  validate "$cfg_ruby_port"   "$chk_port" 'invalid ruby.port'
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
@@ -37,16 +37,16 @@ function nap_type_install_deps () {                             # {{{1
 function nap_type_bootstrap () {                                # {{{1
   loadlib 'helper.nginx'
 
-  nap_type_uni_nginx="$nap_app_cfg/nginx.conf"
+  nap_type_ruby_nginx="$nap_app_cfg/nginx.conf"
 
-    cfg_nginx_server="$cfg_uni_server"
-      cfg_nginx_port="$cfg_uni_port"
-      cfg_nginx_host=localhost
-       cfg_nginx_log="$nap_app_log"
+     cfg_nginx_server="$cfg_ruby_server"
+       cfg_nginx_port="$cfg_ruby_port"
+       cfg_nginx_host=localhost
+        cfg_nginx_log="$nap_app_log"
 
   ohai 'creating nginx configuration ...'
   try 'nginx mkcfg failed' nap_helper_nginx_mkcfg \
-    "$nap_type_uni_nginx"
+    "$nap_type_ruby_nginx"
 
   # ...
 }                                                               # }}}1
@@ -55,7 +55,7 @@ function nap_type_bootstrap () {                                # {{{1
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
   ohai 'caveats'
-  nap_helper_nginx_info unicorn "$nap_type_uni_nginx"
+  nap_helper_nginx_info unicorn "$nap_type_ruby_nginx"
 }                                                               # }}}1
 
 # --
@@ -65,7 +65,7 @@ function nap_type_bootstrap_info () {                           # {{{1
 function nap_type_start () {                                    # {{{1
   ohai 'running app using unicorn ...'
   dpush "$nap_app_app"
-    nohup unicorn -E production -p "$cfg_uni_port" \
+    nohup unicorn -E production -p "$cfg_ruby_port" \
       2>&1 >> "$nap_app_log/unicorn.log" &
     local pid=$!
   dpop
