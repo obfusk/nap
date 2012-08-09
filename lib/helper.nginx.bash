@@ -11,6 +11,14 @@
 #
 # --                                                            # }}}1
 
+if [ "$nap_helper_nginx_loaded" == yes ]; then
+  return
+else
+  nap_helper_nginx_loaded=yes
+fi
+
+# --
+
 # Usage: nap_helper_nginx_mkcfg <file>
 # Writes config file; returns non-zero on failure.
 # Uses $cfg_nginx_{server,log,host,port}, $cfg_name.

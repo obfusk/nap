@@ -11,81 +11,60 @@
 #
 # --                                                            # }}}1
 
-      nap_type_opts=( server port )
-nap_type_ruby_nginx=
+nap_type_opts=( server port command )
+cfg_ruby_command_d=unicorn
+
+loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_ruby_*.
+# Validates cfg_ruby_*; sets default cfg_ruby_command.
 function nap_type_validate_opts () {                            # {{{1
-  validate "$cfg_ruby_server" "$chk_host" 'invalid ruby.server'
-  validate "$cfg_ruby_port"   "$chk_port" 'invalid ruby.port'
+  validate "$cfg_ruby_server"   "$chk_host" 'invalid ruby.server'
+  validate "$cfg_ruby_port"     "$chk_port" 'invalid ruby.port'
+  validate "$cfg_ruby_command"  "$chk_wnil" 'invalid ruby.command'
+
+  : ${cfg_ruby_command:="$cfg_ruby_command_d"}
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
 # Installs dependencies; dies on failure.
 function nap_type_install_deps () {                             # {{{1
-  ohai 'installing dependencies using bundler ...'
-  dpush "$nap_app_app"
-    try 'bundle failed' bundle install
-  dpop
+  nap_helper_daemon_deps 'bundle install' bundle install
 }                                                               # }}}1
 
 # Usage: nap_type_bootstrap
 # Bootstraps; dies on failure.
 function nap_type_bootstrap () {                                # {{{1
-  loadlib 'helper.nginx'
-
-  nap_type_ruby_nginx="$nap_app_cfg/nginx.conf"
-
-     cfg_nginx_server="$cfg_ruby_server"
-       cfg_nginx_port="$cfg_ruby_port"
-       cfg_nginx_host=localhost
-        cfg_nginx_log="$nap_app_log"
-
-  ohai 'creating nginx configuration ...'
-  try 'nginx mkcfg failed' nap_helper_nginx_mkcfg \
-    "$nap_type_ruby_nginx"
-
-  # ...
+  nap_helper_daemon_nginx "$cfg_ruby_server" "$cfg_ruby_port"
 }                                                               # }}}1
 
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
   ohai 'caveats'
-  nap_helper_nginx_info unicorn "$nap_type_ruby_nginx"
+  nap_helper_nginx_info "ruby ($cfg_ruby_command)" \
+    "$nap_helper_daemon_nginx_conf"
 }                                                               # }}}1
 
 # --
 
 # Usage: nap_type_start
-# ...
+# Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
-  ohai 'running app using unicorn ...'
-  dpush "$nap_app_app"
-    nohup unicorn -E production -p "$cfg_ruby_port" \
-      2>&1 >> "$nap_app_log/unicorn.log" &
-    local pid=$!
-  dpop
-  try 'mkpid failed' nap_mkpid "$nap_app_pidfile" "$pid"
-  sleep 7; kill -0 "$pid" 2>/dev/null || die 'process died'
+  nap_helper_daemon_start 7 "$cfg_ruby_command" \
+    nohup "$cfg_ruby_command" -E production -p "$cfg_ruby_port"
 }                                                               # }}}1
 
 # Usage: nap_type_stop
-# ...
+# Stops daemon; dies on failure.
 function nap_type_stop () {                                     # {{{1
-  pid="$( cat "$nap_app_pidfile" )"
-  [ -n "$pid" ] || die 'getpid failed'
-
-  ohai 'killing unicorn process ...'
-  try 'kill failed' kill "$pid"
-  try 'rmpid failed' rm "$nap_app_pidfile"
+  nap_helper_daemon_stop "$cfg_ruby_command"
 }                                                               # }}}1
 
 # Usage: nap_type_restart
-# ...
+# Restarts daemon; dies on failure.
 function nap_type_restart () {                                  # {{{1
   nap_type_stop
   nap_type_start
