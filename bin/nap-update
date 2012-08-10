@@ -4,12 +4,20 @@
 #
 # File        : nap-update
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-10
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
+
+# Better way !?
+
+if [ -n "$SUDO_USER" ]; then
+  cd ; [ -e ~/.bash_profile ] && . ~/.bash_profile
+fi
+
+# --
 
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
 
