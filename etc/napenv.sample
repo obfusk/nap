@@ -1,0 +1,3 @@
+# ~/.napenv is sourced by nap-update.
+
+source ~/.bash_profile  # we need PATH, NAPRC, etc.

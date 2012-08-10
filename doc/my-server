@@ -125,6 +125,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ vim ~/.bash_profile
         # export PATH="/__nap/nap/bin:$PATH" NAPRC=/__nap/cfg/naprc
+
+      $ cp -i /__nap/nap/etc/napenv.sample ~/.napenv
                                                                   }}}3
                                                                   }}}2
 
