@@ -11,9 +11,13 @@
 #
 # --                                                            # }}}1
 
+# NB: $GL_USER comes from gitolite; if you don't want to do any user
+# checking, just pass e.g. NOBODY instead and use @all in your napps
+# file to allow all users.
+
 # TODO: check before sudo ???
 
-exec sudo -H -u nap /__nap/nap/bin/nap-update "$PWD" maybe
+exec sudo -H -u nap /__nap/nap/bin/nap-update "$PWD" "$GL_USER" maybe
 
 # --
 
