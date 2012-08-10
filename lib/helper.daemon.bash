@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-10
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -54,7 +54,7 @@ function nap_helper_daemon_nginx () {                           # {{{1
 # Usage: nap_helper_daemon_start <n> <info> <cmd> <arg(s)>
 # Starts daemon; waits n secs to see if process dies; dies on failure.
 function nap_helper_daemon_start () {                           # {{{1
-  local n="$1" info="$2"; shift 2
+  local n="$1" info="$2" i; shift 2
 
   ohai "$info"
   dpush "$nap_app_app"
@@ -63,7 +63,15 @@ function nap_helper_daemon_start () {                           # {{{1
   dpop
 
   try '[mkpid] failed' nap_mkpid "$nap_app_pidfile" "$pid"
-  sleep "$n"; kill -0 "$pid" 2>/dev/null || die 'process died'
+
+  if [ "$n" -gt 0 ]; then
+    ohai "[wait $n seconds]"
+    for (( i=0 ; i < n ; ++i )); do sleep 1; echo -n .; done
+  fi
+  if ! kill -0 "$pid" 2>/dev/null; then
+    [ "$n" -gt 0 ] && echo; die 'process died'
+  fi
+  [ "$n" -gt 0 ] && echo ' OK'
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_stop <info>
