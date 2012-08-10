@@ -1,8 +1,8 @@
 --                                                                {{{1
 
-File        : README.server
+File        : doc/my-server
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-09
+Date        : 2012-08-10
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
@@ -37,7 +37,7 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ vim /etc/network/interfaces
 
-      $ aptitude install byobu git tree vim
+      $ aptitude install byobu curl git htop tree vim
 
       $ aptitude update
       $ aptitude safe-upgrade
@@ -47,9 +47,9 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     === nap ===                                                   {{{3
 
-      $ mkdir /__nap /__nap/cfg
+      $ mkdir /__nap /__nap/cfg /__nap/cfg/nginx
 
-      $ adduser --system --group --home /__nap/apps
+      $ adduser --system --group --home /__nap/apps \
         --disabled-password nap
 
       $ sudo git clone https://github.com/obfusk/nap.git /__nap/nap
@@ -71,6 +71,14 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       ...
                                                                   }}}3
 
+    === ruby ===                                                  {{{3
+
+      $ aptitude install build-essential zlib1g-dev libssl-dev \
+        libreadline-gplv2-dev
+
+      See nap.
+                                                                  }}}3
+
     === clojure ===                                               {{{3
 
       $ aptitude install leiningen
@@ -86,6 +94,35 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       ...
                                                                   }}}3
+                                                                  }}}2
+
+  === nap ===                                                     {{{2
+
+    Run >> sudo -H -u nap bash -l << to switch to the nap user.
+
+
+    === rbenv ===                                                 {{{3
+
+      See https://github.com/sstephenson/rbenv/wiki/Using-rbenv-in-production.
+
+      $ curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+      $ vim ~/.bash_profile
+        # export PATH="$HOME/.rbenv/bin:$PATH"
+        # eval "$( rbenv init - )"
+
+      $ rbenv install 1.9.3-p0
+      $ rbenv global  1.9.3-p0
+
+      NB: remember to run >> rbenv rehash << when you install gems
+      with executables.
+                                                                  }}}3
+
+    === ruby ===                                                  {{{3
+
+      $ gem install bundler unicorn
+                                                                  }}}3
+
+    ...
                                                                   }}}2
 
   === felix ===                                                   {{{2
