@@ -31,7 +31,7 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
   ... TODO ...
 
 
-  === sudo ===                                                    {{{2
+  === w/ sudo ===                                                 {{{2
 
     === other ===                                                 {{{3
 
@@ -41,6 +41,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ aptitude update
       $ aptitude safe-upgrade
+
+      $ update-alternatives --config editor   # vim
                                                                   }}}3
 
     === nap ===                                                   {{{3
@@ -53,6 +55,12 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ git clone https://github.com/obfusk/nap.git /__nap/nap
 
       $ cp -i /__nap/nap/etc/naprc.sample /__nap/cfg/naprc
+
+      $ vim /__nap/cfg/napps
+        # /__git/repositories/nap-hello.git hello
+
+      $ visudo
+        # git ALL = (nap) NOPASSWD: /__nap/nap/bin/nap-update
 
       See nap/nap.
                                                                   }}}3
@@ -86,7 +94,7 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
                                                                   }}}3
                                                                   }}}2
 
-  === nap ===                                                     {{{2
+  === as nap ===                                                  {{{2
 
     Run >> sudo -H -u nap bash -l << to switch to the nap user.
 
@@ -120,10 +128,29 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
                                                                   }}}3
                                                                   }}}2
 
-  === felix ===                                                   {{{2
+  === as git ===                                                  {{{2
+
+    Run >> sudo -H -u git bash -l << to switch to the git user.
+
+    $ cd ~/.gitolite/hooks/common
+    $ cp -i /__nap/nap/etc/git-post-update-hook.sample post-update
+    $ chmod +x post-update
+    $ gl-setup
+                                                                  }}}2
+
+  === as felix ===                                                {{{2
 
     $ byobu-select-backend          # screen; ^a too
     $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
+                                                                  }}}2
+
+  === gitolite ===                                                {{{2
+
+    * user: admin -> felix, @admins = felix
+    * repo: - testing
+
+    * user: + alice, bob
+    * repo: + nap-hello (felix, alice, bob)
                                                                   }}}2
                                                                   }}}1
 
