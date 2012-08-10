@@ -4,7 +4,7 @@
 #
 # File        : lib/vcs.git.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-10
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -12,20 +12,25 @@
 # --                                                            # }}}1
 
 # Usage: nap_vcs_clone <repo> <dir> [<branch>]
-# Clones repo to dir (w/ default branch); returns non-zero on failure.
+# Clones repo's branch (or master) to dir; dies on failure.
 function nap_vcs_clone () {                                     # {{{1
   local repo="$1" dir="$2" b="$3"
-  git clone ${b:+-b "$b"} "$repo" "$dir"
+  local cmd=( git clone -b "${b:-master}" "$repo" "$dir" )
+
+  ohai "$( join ' ' "${cmd[@]}" )"
+  try 'git clone failed' "${cmd[@]}"
 }                                                               # }}}1
 
 # Usage: nap_vcs_pull <dir> [<branch>]
-# Pulls origin/branch; returns non-zero on git failure.
+# Pulls origin's branch (or master); dies on failure.
 function nap_vcs_pull () {                                      # {{{1
-  local dir="$1" b="$2" r
+  local dir="$1" b="$2"
+  local cmd=( git pull origin "${b:-master}" )
+
   dpush "$dir"
-    git pull origin "${b:-master}"; r="$?"
+    ohai "$( join ' ' "${cmd[@]}" )"
+    try 'git pull failed' "${cmd[@]}"
   dpop
-  return "$r"
 }                                                               # }}}1
 
 # --
