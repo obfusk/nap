@@ -62,8 +62,6 @@ function nap_helper_daemon_start () {                           # {{{1
     local pid=$!
   dpop
 
-  try '[mkpid] failed' nap_mkpid "$nap_app_pidfile" "$pid"
-
   if [ "$n" -gt 0 ]; then
     ohai "[wait $n seconds]"
     for (( i=0 ; i < n ; ++i )); do sleep 1; echo -n .; done
@@ -72,6 +70,8 @@ function nap_helper_daemon_start () {                           # {{{1
     [ "$n" -gt 0 ] && echo; die 'process died'
   fi
   [ "$n" -gt 0 ] && echo ' OK'
+
+  try '[mkpid] failed' nap_mkpid "$nap_app_pidfile" "$pid"
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_stop <info>
