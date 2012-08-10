@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-10
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -23,8 +23,8 @@ loadlib 'helper.daemon'
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_ruby_server"   "$chk_host" 'invalid ruby.server'
   validate "$cfg_ruby_port"     "$chk_port" 'invalid ruby.port'
-  validate "$cfg_ruby_command"  "$chk_wnil" 'invalid ruby.command'
 
+  # don't validate $cfg_ruby_command -- is command line
   : ${cfg_ruby_command:="$cfg_ruby_command_d"}
 }                                                               # }}}1
 
@@ -54,7 +54,8 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
   nap_helper_daemon_start 7 "$cfg_ruby_command" \
-    nohup "$cfg_ruby_command" -E production -p "$cfg_ruby_port"
+    nohup $cfg_ruby_command -E production -p "$cfg_ruby_port"
+  # don't quote $cfg_ruby_command -- is command line
 }                                                               # }}}1
 
 # Usage: nap_type_stop
