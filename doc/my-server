@@ -41,8 +41,6 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ aptitude update
       $ aptitude safe-upgrade
-
-      ...
                                                                   }}}3
 
     === nap ===                                                   {{{3
@@ -52,10 +50,11 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ adduser --system --group --home /__nap/apps \
         --disabled-password nap
 
-      $ sudo git clone https://github.com/obfusk/nap.git /__nap/nap
-      # TODO
+      $ git clone https://github.com/obfusk/nap.git /__nap/nap
 
-      ...
+      $ cp -i /__nap/nap/etc/naprc.sample /__nap/cfg/naprc
+
+      See nap/nap.
                                                                   }}}3
 
     === nginx ===                                                 {{{3
@@ -64,11 +63,7 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ rm -i /etc/nginx/sites-enabled/default
 
-      $ vim ... # ...
-
       $ service nginx start   # also: restart
-
-      ...
                                                                   }}}3
 
     === ruby ===                                                  {{{3
@@ -76,23 +71,18 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ aptitude install build-essential zlib1g-dev libssl-dev \
         libreadline-gplv2-dev
 
-      See nap.
+      See nap/rbenv, nap/ruby.
                                                                   }}}3
 
     === clojure ===                                               {{{3
 
       $ aptitude install leiningen
-
-      ...
                                                                   }}}3
 
     === gitolite ===                                              {{{3
 
       $ aptitude install gitolite
-
       $ dpkg-reconfigure gitolite   # user: git; repo: /__git
-
-      ...
                                                                   }}}3
                                                                   }}}2
 
@@ -106,6 +96,7 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       See https://github.com/sstephenson/rbenv/wiki/Using-rbenv-in-production.
 
       $ curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+
       $ vim ~/.bash_profile
         # export PATH="$HOME/.rbenv/bin:$PATH"
         # eval "$( rbenv init - )"
@@ -122,15 +113,17 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ gem install bundler unicorn
                                                                   }}}3
 
-    ...
+    === nap ===                                                   {{{3
+
+      $ vim ~/.bash_profile
+        # export PATH="/__nap/nap/bin:$PATH" NAPRC=/__nap/cfg/naprc
+                                                                  }}}3
                                                                   }}}2
 
   === felix ===                                                   {{{2
 
     $ byobu-select-backend          # screen; ^a too
     $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
-
-    ...
                                                                   }}}2
                                                                   }}}1
 
