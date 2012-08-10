@@ -1,0 +1,23 @@
+# --
+#
+# This is a napps file; it specifies which users can update which apps
+# via which repositories.  See nap, nap-update.  The syntax is
+# inspired by gitolite.conf.
+#
+# A napps file is a bash script, so you can use variables (like admins
+# in this example) as user groups.  The special user @all is
+# interpreted by nap-update to mean all users have access.
+#
+# The app function (really just echo in disguise) is used to specify
+# an app:
+#   $ app /path/to/repository name-of-app user1 user2 user3
+#
+# --
+
+admins='felix john'
+
+app /__git/repositories/nap-foo.git   foo   @all
+app /__git/repositories/nap-bar.git   bar   alice bob
+app /__git/repositories/nap-baz.git   baz   $admins bob
+
+# --

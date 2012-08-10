@@ -11,28 +11,36 @@
 #
 # --                                                            # }}}1
 
-# Better way !?
-
-if [ -n "$SUDO_USER" ]; then
-  cd ; [ -e ~/.bash_profile ] && . ~/.bash_profile
-fi
-
-# --
-
 function die () { echo "${2:-error}: $1" >&2; exit 1; }
+
+# is there a better way !?
+if [ -n "$SUDO_USER" ]; then
+  cd || die 'failed to cd'
+  if [ -e ~/.napenv ]; then
+    source ~/.napenv || die 'failed to load ~/.napenv'
+  fi
+fi
 
 rc="${NAPRC:-/etc/naprc}"
 source "$rc" || die 'failed to load naprc'
 
-[ "$#" -eq 1 ] || [ "$#" -eq 2 -a "$2" == maybe ] \
-  || die 'nap-update <repo> [maybe]' usage
-repo="$1" maybe="$2"
+[ "$#" -eq 2 ] || [ "$#" -eq 3 -a "$3" == maybe ] \
+  || die 'nap-update <repo> <user> [maybe]' usage
+repo="$1" user="$2" maybe="$3"
 
 # --
 
-while read -r repo_ app; do
-  [ "$repo" == "$repo_" ] && exec nap update "$app"
-done < "$NAPPS_FILE"
+function process () {
+  local rep="$1" app="$2" IFS=':'; shift 2
+  [ "$rep" == "$repo" ]       || return 1
+  [[ ":$*:" == *:'@all':* ]]  && return 0
+  [[ ":$*:" == *:"$user":* ]] || return 2
+}
+
+( function app () { echo "$@"; }; source "$NAPPS_FILE" ) | \
+while read -r -a fields; do
+  process "${fields[@]}" && exec nap update "${fields[1]}"
+done
 
 [ "$maybe" == maybe ] || die "repo \`$repo' not found"
 
