@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.update.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-10
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -22,6 +22,8 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
+  olog 'update {'
+
   ohai "[update] \`$cfg_name'"
 
   ohai '[loadcfg]'
@@ -34,6 +36,8 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_install_deps
   nap_type_start
   ohai '[done]'
+
+  olog '} update'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

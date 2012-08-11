@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.stop.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -22,6 +22,8 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
+  olog 'stop {'
+
   ohai "[stop] \`$cfg_name'"
 
   ohai '[loadcfg]'
@@ -30,6 +32,8 @@ function nap_cmd_run () {                                       # {{{1
 
   nap_type_stop
   ohai '[done]'
+
+  olog '} stop'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

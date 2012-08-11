@@ -51,6 +51,8 @@ function nap_cmd_run_prepare () {                               # {{{1
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare "$@"
 
+  olog 'new {'
+
   ohai "[new app] \`$cfg_name'"
 
   try '[mkdir] failed'      mkdir "$nap_app"
@@ -64,6 +66,8 @@ function nap_cmd_run () {                                       # {{{1
   try '[mkcfg] failed' nap_mkcfg "$nap_app_cfgfile"
 
   ohai '[done]'
+
+  olog '} new'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help
