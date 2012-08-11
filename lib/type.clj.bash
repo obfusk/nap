@@ -11,17 +11,30 @@
 #
 # --                                                            # }}}1
 
-nap_type_opts=( server port )
+# TODO {
+#
+#   * lein zombies !!!
+#   * lein deps alternative ???
+#
+# } TODO
+
+# --
+
+nap_type_opts=( server port cmd )
+cfg_clj_cmd_d='lein run :prod'
 
 loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_clj_*.
+# Validates cfg_clj_*; sets default cfg_clj_cmd.
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_clj_server"  "$chk_host" 'invalid clj.server'
   validate "$cfg_clj_port"    "$chk_port" 'invalid clj.port'
+
+  # don't validate $cfg_clj_cmd -- is command line
+  : ${cfg_clj_cmd:="$cfg_clj_cmd_d"}
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
@@ -40,7 +53,8 @@ function nap_type_bootstrap () {                                # {{{1
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
   ohai 'Caveats'
-  nap_helper_nginx_info clojure "$nap_helper_daemon_nginx_conf"
+  nap_helper_nginx_info "clojure ($cfg_clj_cmd)" \
+    "$nap_helper_daemon_nginx_conf"
 }                                                               # }}}1
 
 # --
@@ -49,14 +63,14 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
   ohai "PORT=$cfg_clj_port"
-  PORT="$cfg_clj_port" nap_helper_daemon_start 7 nohup lein run :prod
+  # don't quote $cfg_clj_cmd -- is command line
+  PORT="$cfg_clj_port" nap_helper_daemon_start 7 nohup $cfg_clj_cmd
 }                                                               # }}}1
 
 # Usage: nap_type_stop
 # Stops daemon; dies on failure.
 function nap_type_stop () {                                     # {{{1
-  # TODO: lein zombies !!?
-  nap_helper_daemon_stop lein
+  nap_helper_daemon_stop "$cfg_clj_cmd"
 }                                                               # }}}1
 
 # Usage: nap_type_restart

@@ -11,8 +11,16 @@
 #
 # --                                                            # }}}1
 
-nap_type_opts=( server port command )
-cfg_ruby_cmd_d='unicorn -E production'
+# TODO {
+#
+#   * bundle install alternative ???
+#
+# } TODO
+
+# --
+
+nap_type_opts=( server port cmd )
+cfg_ruby_cmd_d='unicorn -E production -p ${PORT}'
 
 loadlib 'helper.daemon'
 
@@ -53,8 +61,10 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Usage: nap_type_start
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
-  # don't quote $cfg_ruby_cmd -- is command line
-  nap_helper_daemon_start 7 nohup $cfg_ruby_cmd -p "$cfg_ruby_port"
+  ohai "PORT=$cfg_ruby_port"
+  local cmd="${cfg_ruby_cmd//\${PORT\}/$cfg_ruby_port}"
+  # don't quote $cmd -- is command line
+  PORT="$cfg_ruby_port" nap_helper_daemon_start 7 nohup $cmd
 }                                                               # }}}1
 
 # Usage: nap_type_stop
