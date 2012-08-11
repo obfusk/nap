@@ -79,7 +79,7 @@ function nap_helper_daemon_chk_wait () {                        # {{{1
     for (( i=0 ; i < n ; ++i )); do sleep 1; echo -n .; done
   fi
   if ! nap_helper_daemon_chk "$pid"; then
-    [ "$n" -gt 0 ] && echo; die 'process died'
+    [ "$n" -gt 0 ] && echo; odie 'process died'
   fi
   [ "$n" -gt 0 ] && echo ' OK'
 }                                                               # }}}1

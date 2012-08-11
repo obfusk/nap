@@ -27,7 +27,7 @@ function nap_cmd_run () {                                       # {{{1
   ohai "[bootstap] \`$cfg_name'"
 
   ohai '[loadcfg]'
-  source "$nap_app_cfgfile" || die '[loadcfg] failed'
+  source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_type_bootstrap

@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd._defaults.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2

@@ -115,24 +115,24 @@ function onoe () {                                              # {{{1
 # Runs >> onoe <msg> Warning <<.
 function opoo () { onoe "$1" Warning; }
 
-# Usage: die <msg> [<label>]
-# Exits w/ 1; uses onoe; replaces die from bin/nap.
-function die () { onoe "$@"; exit 1; }
+# Usage: odie <msg> [<label>]
+# Exits w/ 1; uses onoe.
+function odie () { onoe "$@"; exit 1; }
 
 # --
 
 # Usage: try <msg> <cmd> <arg(s)>
-# Runs cmd w/ args; runs $try_func (or die) w/ msg on failure.
+# Runs cmd w/ args; runs $try_func (or odie) w/ msg on failure.
 function try () {                                               # {{{1
   local msg="$1"; shift
-  "$@" || "${try_func:-die}" "$msg"
+  "$@" || "${try_func:-odie}" "$msg"
 }                                                               # }}}1
 
 # Usage: try_q <msg> <cmd> <arg(s)>
 # Like try, but redirects stderr to $try_stderr (or /dev/null).
 function try_q () {                                             # {{{1
   local msg="$1"; shift
-  "$@" 2>"${try_stderr:-/dev/null}" || "${try_func:-die}" "$msg"
+  "$@" 2>"${try_stderr:-/dev/null}" || "${try_func:-odie}" "$msg"
 }                                                               # }}}1
 
 # --
