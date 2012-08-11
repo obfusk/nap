@@ -23,7 +23,9 @@ source "$rc" || die 'failed to load naprc'
 
 apps=()
 shopt -s nullglob
-for x in "$NAP_APP_DIR"/*; do [ -e "$x/app" ] && apps+=( "$x" ); done
+for x in "$NAP_APPS_DIR"/*; do
+  [ -e "$x/app" ] && apps+=( "$( basename "$x" )" )
+done
 shopt -u nullglob
 
 # --
@@ -43,7 +45,7 @@ else
   elif [[ "$cmd" =~ ^($commands)$ ]]; then
     if [ "$#" -eq 0 ]; then as=( "${apps[@]}" ); else as=( "$@" ); fi
     for x in "${as[@]}"; do
-      nap "$cmd" "$x"
+      nap "$cmd" "$x"; echo
     done
   else
     echo "error: unknown command \`$cmd'" >&2
