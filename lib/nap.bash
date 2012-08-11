@@ -82,6 +82,7 @@ function nap_app_set () {                                       # {{{1
 # --
 
 function now () { date +'%F %T'; }
+function qsh () { printf '%q' "$1"; }
 
 # Usage: nap_log <what>
 # Wraps tee; writes to log file(s).
@@ -194,8 +195,6 @@ __END
 
 # Usage: nap_mkcfg <file>
 # Writes cfg_* to file; returns non-zero on failure.
-#
-# TODO: handle shell metachars !!?
 function nap_mkcfg () {                                         # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
@@ -203,14 +202,14 @@ function nap_mkcfg () {                                         # {{{1
 
     $(  for x in "${nap_cfgs[@]}"; do
           eval "y=\$cfg_$x"
-          echo "cfg_$x=$y"
+          echo "cfg_$x=$( qsh "$y" )"
         done  )
 
     # the specifics
 
     $(  for x in "${nap_type_opts[@]}"; do
           eval "y=\$cfg_${cfg_type}_$x"
-          echo "cfg_${cfg_type}_$x=$y"
+          echo "cfg_${cfg_type}_$x=$( qsh "$y" )"
         done  )
 
     # --
