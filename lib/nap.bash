@@ -4,7 +4,7 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -87,6 +87,10 @@ function onoe () {                                              # {{{1
   local msg="$1" label="${2:-Error}"
   echo -e "${colour_red}${label}${colour_non}: ${msg}"
 }                                                               # }}}1
+
+# Usage: opoo <msg>
+# Runs >> onoe <msg> Warning <<.
+function opoo () { onoe "$1" Warning; }
 
 # Usage: die <msg> [<label>]
 # Exits w/ 1; uses onoe; replaces die from bin/nap.
