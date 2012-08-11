@@ -179,7 +179,7 @@ function nap_help () {                                          # {{{1
     nap version $vsn
 
     Usage     : $usage
-    Commmands : $( nap_cmds ', ' )
+    Commands  : $( nap_cmds ', ' )
 __END
   exit 0
 }                                                               # }}}1
