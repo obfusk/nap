@@ -130,8 +130,8 @@ function nap_helper_daemon_start () {                           # {{{1
   else
     ohai "$info"
     dpush "$nap_app_app"
-      $nohup "$@"  >> "$nap_app_log/deamon.log" \
-                  2>> "$nap_app_log/deamon-error.log" &
+      $nohup "$@"  >> "$nap_app_log/deamon-stdout.log" \
+                  2>> "$nap_app_log/deamon-stderr.log" &
       local pid=$!
     dpop
 
