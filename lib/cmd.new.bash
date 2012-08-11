@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-10
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -56,6 +56,7 @@ function nap_cmd_run () {                                       # {{{1
   try '[mkdir] failed'      mkdir "$nap_app"
   try '[mkdir cfg] failed'  mkdir "$nap_app_cfg"
   try '[mkdir log] failed'  mkdir "$nap_app_log"
+  try '[mkdir run] failed'  mkdir "$nap_app_run"
 
   nap_vcs_clone "$cfg_repo" "$nap_app_app" $cfg_branch
 

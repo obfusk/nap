@@ -64,15 +64,27 @@ chk_port='[0-9]+'
 # Usage: nap_app_set
 # Sets nap_app*.
 function nap_app_set () {                                       # {{{1
-         nap_app="$NAP_APPS_DIR/$cfg_name"
-     nap_app_app="$nap_app/app"
-     nap_app_cfg="$nap_app/cfg"
-     nap_app_log="$nap_app/log"
- nap_app_cfgfile="$nap_app_cfg/nap.bash"
- nap_app_pidfile="$nap_app_log/pid"                             # TODO
+          nap_app="$NAP_APPS_DIR/$cfg_name"
+      nap_app_app="$nap_app/app"
+      nap_app_cfg="$nap_app/cfg"
+      nap_app_log="$nap_app/log"
+      nap_app_run="$nap_app/run"
+  nap_app_cfgfile="$nap_app_cfg/napprc"
+  nap_app_logfile="$nap_app_cfg/nap.log"
+  nap_app_pidfile="$nap_app_run/deamon.pid"
 }                                                               # }}}1
 
 # --
+
+function now () { date +'%F %T'; }
+
+# Usage: olog <msg(s)>
+# Logs each message to the log file(s).
+function olog () {                                              # {{{1
+  local h="[$( now )][nap]${cfg_name:+[$cfg_name]} " x
+  for x in "$@"; do echo "$h $x"; done \
+    | tee "$NAP_LOG_DIR/nap.log" ${cfg_name:+"$nap_app_logfile"}
+}                                                               # }}}1
 
 # Usage: ohai <msg>
 # Echoes "==> msg"; uses $colour_*.
