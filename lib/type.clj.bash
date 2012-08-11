@@ -4,7 +4,7 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -48,8 +48,8 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Usage: nap_type_start
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
-  PORT="$cfg_clj_port" nap_helper_daemon_start 7 'lein run' \
-    nohup lein run :prod
+  ohai "PORT=$cfg_clj_port"
+  PORT="$cfg_clj_port" nap_helper_daemon_start 7 nohup lein run :prod
 }                                                               # }}}1
 
 # Usage: nap_type_stop
