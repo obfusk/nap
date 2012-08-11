@@ -135,7 +135,7 @@ function nap_helper_daemon_start () {                           # {{{1
       local pid=$!
     dpop
 
-    nap_helper_daemon_chk_wait "$pid"
+    nap_helper_daemon_chk_wait "$n" "$pid"
     try '[mkpid] failed' nap_mkpid "$nap_app_pidfile" "$pid"
   fi
 }                                                               # }}}1
