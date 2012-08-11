@@ -2,7 +2,7 @@
 
 File        : doc/my-server
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-10
+Date        : 2012-08-11
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
@@ -55,12 +55,15 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ git clone https://github.com/obfusk/nap.git /__nap/nap
 
       $ cp -i /__nap/nap/etc/naprc.sample /__nap/cfg/naprc
+      $ cp -i /__nap/nap/etc/napps.sample /__nap/cfg/napps
 
       $ vim /__nap/cfg/napps
-        # /__git/repositories/nap-hello.git hello
+        # app /__git/repositories/nap-hello.git hello alice
 
       $ visudo
-        # git ALL = (nap) NOPASSWD: /__nap/nap/bin/nap-update
+        # Cmnd_Alias NAPUPDATE = /__nap/nap/bin/nap-update
+        # Defaults!NAPUPDATE always_set_home
+        # git ALL = (nap) NOPASSWD: NAPUPDATE
 
       See nap/nap.
                                                                   }}}3
