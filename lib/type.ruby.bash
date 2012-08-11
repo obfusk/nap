@@ -61,10 +61,10 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Usage: nap_type_status [-q]
 # Outputs deamon status.
 function nap_type_status () {                                   # {{{1
-  local q="$1"
-  local status="$( nap_helper_daemon_status "${cfg_ruby_cmd%% *}" )"
+  local q="$1" name="${cfg_ruby_cmd%% *}"
+  local status="$( nap_helper_daemon_status_info "$name" )"
 
-  ohai "[$status]"  # TODO: use -q
+  ohai "[$name is $status]"   # TODO: use -q
 }                                                               # }}}1
 
 # Usage: nap_type_start
