@@ -60,11 +60,12 @@ function nap_helper_daemon_getpid () {                          # {{{1
 function nap_helper_daemon_chk () {                             # {{{1
   local pid="$1" name="$2"
   local cmd="$( ps -p "$pid" -o comm= )"
+  local c="${cmd%% *}"
 
   [ -z "$cmd" ] && return 1
 
-  if [ -n "$name" -a "$name" != "$cmd" ]; then
-    opoo "process with PID $pid has command \`$cmd';"
+  if [ -n "$name" -a "$name" != "$c" ]; then
+    opoo "process with PID $pid has command \`$c';"
     opoo "was expecting \`$name'"
   fi
 }                                                               # }}}1
@@ -105,12 +106,25 @@ function nap_helper_daemon_status () {                          # {{{1
   local name="$1"
   local pid="$( nap_helper_daemon_getpid )"
 
-  if [ -n "$pid" ]; then
+  if [ -z "$pid" ]; then
     echo stopped
   elif nap_helper_daemon_chk "$pid" ${name:+"$name"}; then
     echo "$pid"
   else
     echo dead
+  fi
+}                                                               # }}}1
+
+# Usage: nap_helper_daemon_status_info [<name>]
+# Human-readable version of nap_helper_daemon_status.
+function nap_helper_daemon_status_info () {                     # {{{1
+  local name="$1"
+  local status="$( nap_helper_daemon_status ${name:+"$name"} )"
+
+  if [ "$status" != stopped -a "$status" != dead ]; then
+    echo "running (PID=$status)"
+  else
+    echo "$status"
   fi
 }                                                               # }}}1
 
@@ -126,7 +140,7 @@ function nap_helper_daemon_start () {                           # {{{1
   local status="$( nap_helper_daemon_status "$name" )"
 
   if [ "$status" != stopped -a "$status" != dead ]; then
-    opoo "[running (with PID $status)] $name"
+    opoo "$name is running (PID=$status)"
   else
     ohai "$info"
     dpush "$nap_app_app"
@@ -147,10 +161,8 @@ function nap_helper_daemon_stop () {                            # {{{1
   local name="${info%% *}"
   local status="$( nap_helper_daemon_status "$name" )"
 
-  if [ "$status" == stopped ]; then
-    opoo "[stopped] $name"
-  elif [ "$status" == dead ]; then
-    opoo "[dead] $name"
+  if [ "$status" == stopped -o "$status" == dead ]; then
+    opoo "$name is $status"
   else
     ohai "[kill] $name"
     try '[kill] failed' kill "$status"    # $status is pid if running
