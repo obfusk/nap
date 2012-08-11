@@ -22,7 +22,7 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  olog 'stop {'
+  olog 'stopping ...'
 
   ohai "[stop] \`$cfg_name'"
 
@@ -33,7 +33,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_stop
   ohai '[done]'
 
-  olog '} stop'
+  olog 'stopped.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

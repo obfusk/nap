@@ -22,7 +22,7 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  olog 'bootstrap {'
+  olog 'bootstrapping ...'
 
   ohai "[bootstap] \`$cfg_name'"
 
@@ -35,7 +35,7 @@ function nap_cmd_run () {                                       # {{{1
   ohai '[done]'
   nap_type_bootstrap_info
 
-  olog '} bootstrap'
+  olog 'bootstrapped.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

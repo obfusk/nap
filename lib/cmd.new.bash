@@ -40,6 +40,8 @@ function nap_cmd_run_prepare () {                               # {{{1
 
   nap_type_validate_opts
 
+  olog "creating app \`$cfg_name' ..."
+
   nap_app_set
   [ -e "$nap_app" ] && die "app \`$cfg_name' already exists"
 
@@ -50,8 +52,6 @@ function nap_cmd_run_prepare () {                               # {{{1
 # Runs nap_cmd_run_prepare; makes app w/ clone, cfg.
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare "$@"
-
-  olog 'new {'
 
   ohai "[new app] \`$cfg_name'"
 
@@ -67,7 +67,7 @@ function nap_cmd_run () {                                       # {{{1
 
   ohai '[done]'
 
-  olog '} new'
+  olog "app \`$cfg_name' created."
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

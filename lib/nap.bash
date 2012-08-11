@@ -73,7 +73,7 @@ function nap_app_set () {                                       # {{{1
       nap_app_log="$nap_app/log"
       nap_app_run="$nap_app/run"
   nap_app_cfgfile="$nap_app_cfg/napprc"
-  nap_app_logfile="$nap_app_cfg/nap.log"
+  nap_app_logfile="$nap_app_log/nap.log"
   nap_app_pidfile="$nap_app_run/deamon.pid"
 
     nap_logfiles+=( "$nap_app_logfile" )

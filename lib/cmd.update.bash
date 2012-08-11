@@ -22,7 +22,7 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  olog 'update {'
+  olog 'updating ...'
 
   ohai "[update] \`$cfg_name'"
 
@@ -37,7 +37,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_start
   ohai '[done]'
 
-  olog '} update'
+  olog 'updated.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

@@ -25,7 +25,7 @@ function nap_cmd_run () {                                       # {{{1
   local q="$2"
   [ -z "$q" -o "$q" == '-q' ] || die "$nap_cmd_usage" usage
 
-  olog 'status {'
+  olog 'showing status ...'
 
   [ "$q" == '-q' ] || ohai "[status] \`$cfg_name'"
 
@@ -36,7 +36,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_status ${q:+"$q"}
   [ "$q" == '-q' ] || ohai '[done]'
 
-  olog '} status'
+  olog 'status shown.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

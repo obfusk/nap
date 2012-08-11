@@ -22,7 +22,7 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  olog 'start {'
+  olog 'starting ...'
 
   ohai "[start] \`$cfg_name'"
 
@@ -33,7 +33,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_start
   ohai '[done]'
 
-  olog '} start'
+  olog 'started.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help
