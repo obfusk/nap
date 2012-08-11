@@ -23,15 +23,14 @@ function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
   olog 'starting ...'
-
   ohai "[start] \`$cfg_name'"
 
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_type_start
-  ohai '[done]'
 
+  ohai '[done]'
   olog 'started.'
 }                                                               # }}}1
 

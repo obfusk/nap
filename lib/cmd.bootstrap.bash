@@ -23,7 +23,6 @@ function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
   olog 'bootstrapping ...'
-
   ohai "[bootstap] \`$cfg_name'"
 
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
