@@ -26,7 +26,6 @@ function nap_cmd_run () {                                       # {{{1
 
   ohai "[update] \`$cfg_name'"
 
-  ohai '[loadcfg]'
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
   loadlib "vcs.$cfg_vcs"

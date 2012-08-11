@@ -29,7 +29,6 @@ function nap_cmd_run () {                                       # {{{1
 
   [ "$q" == '-q' ] || ohai "[status] \`$cfg_name'"
 
-  [ "$q" == '-q' ] || ohai '[loadcfg]'
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
