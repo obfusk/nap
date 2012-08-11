@@ -68,6 +68,12 @@ function nap_type_status () {                                   # {{{1
   ohai "[$name is $status]"   # TODO: use -q
 }                                                               # }}}1
 
+# Usage: nap_type_running [warn]
+# Returns non-zero if not running; warns if dead when warn is passed.
+function nap_type_running () {                                  # {{{1
+  nap_helper_daemon_running "${cfg_clj_cmd%% *}" ${1:+"$1"}
+}                                                               # }}}1
+
 # Usage: nap_type_start
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1

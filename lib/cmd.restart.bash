@@ -2,7 +2,7 @@
 
 # --                                                            # {{{1
 #
-# File        : lib/cmd.update.bash
+# File        : lib/cmd.restart.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
 # Date        : 2012-08-11
 #
@@ -11,33 +11,33 @@
 #
 # --                                                            # }}}1
 
-nap_cmd_usage='nap update <name>'
+nap_cmd_usage='nap restart <name>'
 
 loadlib 'cmd._defaults'
 
 # --
 
 # Usage: nap_cmd_run <arg(s)>
-# Runs nap_cmd_run_prepare_d; loads libs, cfg; updates app.
+# Runs nap_cmd_run_prepare_d; loads libs, cfg; restarts app.
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 1 "$@"
 
-  olog 'updating ...'
-  ohai "[update] \`$cfg_name'"
+  olog 'restarting ...'
+  ohai "[restart] \`$cfg_name'"
 
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
-  loadlib "vcs.$cfg_vcs"
 
   nap_type_running warn; local run="$?"
-  [ "$run" -eq 0 ] && nap_type_stop
-  nap_vcs_pull "$nap_app_app" $cfg_branch
-  nap_type_install_deps
-  [ "$run" -eq 0 ] && nap_type_start
+  [ "$run" -eq 0 ] && nap_type_restart
 
   ohai '[done]'
-  [ "$run" -ne 0 ] && olog 'not running;'
-  olog 'updated.'
+
+  if [ "$run" -eq 0 ]; then
+    olog 'restarted.'
+  else
+    olog 'not restarted (not running).'
+  fi
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

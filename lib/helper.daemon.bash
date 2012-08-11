@@ -54,7 +54,7 @@ function nap_helper_daemon_getpid () {                          # {{{1
   [ -f "$nap_app_pidfile" ] && cat "$nap_app_pidfile"
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_chk <pid> [<name>]
+# Usage: nap_helper_daemon_chk <pid> <name>
 # Checks if pid is alive; warns if name not equal to command; returns
 # non-zero if not alive.
 function nap_helper_daemon_chk () {                             # {{{1
@@ -64,22 +64,22 @@ function nap_helper_daemon_chk () {                             # {{{1
 
   [ -z "$cmd" ] && return 1
 
-  if [ -n "$name" -a "$name" != "$c" ]; then
+  if [ "$name" != "$c" ]; then
     opoo "process with PID $pid has command \`$c';"
     opoo "was expecting \`$name'"
   fi
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_chk_wait <n> <pid>
+# Usage: nap_helper_daemon_chk_wait <n> <pid> <name>
 # Waits n secs to see if process dies; dies on failure.
 function nap_helper_daemon_chk_wait () {                        # {{{1
-  local n="$1" pid="$2" i
+  local n="$1" pid="$2" name="$3" i
 
   if [ "$n" -gt 0 ]; then
     ohai "[wait $n seconds]"
     for (( i=0 ; i < n ; ++i )); do sleep 1; echo -n .; done
   fi
-  if ! nap_helper_daemon_chk "$pid"; then
+  if ! nap_helper_daemon_chk "$pid" "$name"; then
     [ "$n" -gt 0 ] && echo; odie 'process died'
   fi
   [ "$n" -gt 0 ] && echo ' OK'
@@ -98,7 +98,7 @@ function nap_helper_daemon_deps () {                            # {{{1
   dpop
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_status [<name>]
+# Usage: nap_helper_daemon_status <name>
 # Uses pidfile and nap_helper_daemon_chk to see if process is running;
 # outputs "stopped" when stopped (no pidfile), "dead" when dead (has
 # pidfile, not running), and "<pid>" when running.
@@ -108,24 +108,44 @@ function nap_helper_daemon_status () {                          # {{{1
 
   if [ -z "$pid" ]; then
     echo stopped
-  elif nap_helper_daemon_chk "$pid" ${name:+"$name"}; then
+  elif nap_helper_daemon_chk "$pid" "$name"; then
     echo "$pid"
   else
     echo dead
   fi
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_status_info [<name>]
+# Usage: nap_helper_daemon_status_info <name>
 # Human-readable version of nap_helper_daemon_status.
 function nap_helper_daemon_status_info () {                     # {{{1
   local name="$1"
-  local status="$( nap_helper_daemon_status ${name:+"$name"} )"
+  local status="$( nap_helper_daemon_status "$name" )"
 
   if [ "$status" != stopped -a "$status" != dead ]; then
     echo "running (PID=$status)"
   else
     echo "$status"
   fi
+}                                                               # }}}1
+
+# Usage: nap_helper_daemon_running <name> [warn]
+# Returns 0 when running, 1 when stopped, and 2 when dead; when warn
+# is passed, it warns if dead and tells if stopped.
+function nap_helper_daemon_running () {                         # {{{1
+  local name="$1" warn="$2"
+  local status="$( nap_helper_daemon_status "$name" )"
+
+  if [ "$status" == dead ]; then
+    [ "$warn" == warn ] && opoo "$name is dead"
+    return 2
+  fi
+
+  if [ "$status" == stopped ]; then
+    [ "$warn" == warn ] && ohai "[$name is stopped]"
+    return 1
+  fi
+
+  return 0
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_start <n> [nohup] <cmd> <arg(s)>
@@ -149,7 +169,7 @@ function nap_helper_daemon_start () {                           # {{{1
       local pid=$!
     dpop
 
-    nap_helper_daemon_chk_wait "$n" "$pid"
+    nap_helper_daemon_chk_wait "$n" "$pid" "$name"
     try '[mkpid] failed' nap_mkpid "$nap_app_pidfile" "$pid"
   fi
 }                                                               # }}}1
