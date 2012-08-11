@@ -4,7 +4,7 @@
 #
 # File        : nap
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-09
+# Date        : 2012-08-11
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -79,7 +79,7 @@ if [[ "$nap_cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
   if [ "$help" == y ]; then
     nap_cmd_help
   else
-    nap_cmd_run "$@"
+    nap_cmd_run "$@" 2> >( nap_log stderr )
   fi
 else
   fail "unknown command \`$nap_cmd'"

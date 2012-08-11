@@ -16,6 +16,9 @@
    nap_commands=( new bootstrap update start stop status )      # TODO
        nap_cfgs=( type repo vcs branch )
 
+  nap_logfile_t="$NAP_LOG_DIR/nap-WHAT.log"
+ nap_logfiles_t=( "$nap_logfile_t" )
+
         nap_app=
     nap_app_app=
     nap_app_cfg=
@@ -70,21 +73,38 @@ function nap_app_set () {                                       # {{{1
       nap_app_log="$nap_app/log"
       nap_app_run="$nap_app/run"
   nap_app_cfgfile="$nap_app_cfg/napprc"
-  nap_app_logfile="$nap_app_cfg/nap.log"
   nap_app_pidfile="$nap_app_run/deamon.pid"
+
+  nap_app_logfile_t="$nap_app_cfg/nap-WHAT.log"
+    nap_logfiles_t+=( "$nap_app_logfile_t" )
 }                                                               # }}}1
 
 # --
 
 function now () { date +'%F %T'; }
 
+# Usage: nap_log <what>
+# Wraps tee; writes to log file(s).
+function nap_log () {                                           # {{{1
+  local what="$1" REPLY fs=() x
+  local h="[nap]${cfg_name:+[$cfg_name]}"
+
+  for x in "${nap_logfiles_t}"; do
+    fs+=( "${x//WHAT/$what}" )
+  done
+
+  while read -r; do
+    echo "[$( now )]$h $REPLY"
+  done | tee -a "${fs[@]}" > /dev/null
+}                                                               # }}}1
+
 # Usage: olog <msg(s)>
 # Logs each message to the log file(s).
 function olog () {                                              # {{{1
-  local h="[$( now )][nap]${cfg_name:+[$cfg_name]} " x
-  for x in "$@"; do echo "$h $x"; done \
-    | tee "$NAP_LOG_DIR/nap.log" ${cfg_name:+"$nap_app_logfile"}
+  local x; for x in "$@"; do echo "$x"; done | nap_log misc
 }                                                               # }}}1
+
+# --
 
 # Usage: ohai <msg>
 # Echoes "==> msg"; uses $colour_*.
