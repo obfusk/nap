@@ -79,7 +79,7 @@ if [[ "$nap_cmd" =~ ^($( nap_cmds '|' ))$ ]]; then
   if [ "$help" == y ]; then
     nap_cmd_help
   else
-    nap_cmd_run "$@" 2> >( nap_log stderr )
+    nap_cmd_run "$@"
   fi
 else
   fail "unknown command \`$nap_cmd'"

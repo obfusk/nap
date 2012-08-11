@@ -16,8 +16,8 @@
    nap_commands=( new bootstrap update start stop status )      # TODO
        nap_cfgs=( type repo vcs branch )
 
-  nap_logfile_t="$NAP_LOG_DIR/nap-WHAT.log"
- nap_logfiles_t=( "$nap_logfile_t" )
+    nap_logfile="$NAP_LOG_DIR/nap.log"
+   nap_logfiles=( "$nap_logfile" )
 
         nap_app=
     nap_app_app=
@@ -73,10 +73,10 @@ function nap_app_set () {                                       # {{{1
       nap_app_log="$nap_app/log"
       nap_app_run="$nap_app/run"
   nap_app_cfgfile="$nap_app_cfg/napprc"
+  nap_app_logfile="$nap_app_cfg/nap.log"
   nap_app_pidfile="$nap_app_run/deamon.pid"
 
-  nap_app_logfile_t="$nap_app_cfg/nap-WHAT.log"
-    nap_logfiles_t+=( "$nap_app_logfile_t" )
+    nap_logfiles+=( "$nap_app_logfile" )
 }                                                               # }}}1
 
 # --
@@ -84,25 +84,13 @@ function nap_app_set () {                                       # {{{1
 function now () { date +'%F %T'; }
 function qsh () { printf '%q' "$1"; }
 
-# Usage: nap_log <what>
-# Wraps tee; writes to log file(s).
-function nap_log () {                                           # {{{1
-  local what="$1" REPLY fs=() x
-  local h="[nap]${cfg_name:+[$cfg_name]}"
-
-  for x in "${nap_logfiles_t}"; do
-    fs+=( "${x//WHAT/$what}" )
-  done
-
-  while read -r; do
-    echo "[$( now )]$h $REPLY"
-  done | tee -a "${fs[@]}" > /dev/null
-}                                                               # }}}1
-
 # Usage: olog <msg(s)>
-# Logs each message to the log file(s).
+# Writes msg(s) to log file(s).
 function olog () {                                              # {{{1
-  local x; for x in "$@"; do echo "$x"; done | nap_log misc
+  local x f h="[$( now )][nap${cfg_name:+ ($cfg_name)}]"
+  for x in "$@"; do
+    for f in "${nap_logfiles[@]}"; do echo "$h $x" >> "$f"; done
+  done
 }                                                               # }}}1
 
 # --
@@ -115,10 +103,12 @@ function ohai () {                                              # {{{1
 }                                                               # }}}1
 
 # Usage: onoe <msg> [<label>]
-# Echoes "Error: msg"; label replaces Error; uses $colour_*.
+# Echoes "Error: msg"; label replaces Error; uses $colour_*; also logs
+# using olog.
 function onoe () {                                              # {{{1
   local msg="$1" label="${2:-Error}"
   echo -e "${colour_red}${label}${colour_non}: ${msg}"
+  olog "${label}: ${msg}"
 }                                                               # }}}1
 
 # Usage: opoo <msg>
