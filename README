@@ -23,7 +23,6 @@ Version     : v0.0.0
   nap is a configurable and extensible set of tools and templates that
   makes it easer to manage and deploy web applications.
 
-  With nap, you can:
     * Have new apps running in seconds.
     * Get a quick overview of running apps.
     * Update an app in seconds with a single command.
