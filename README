@@ -21,7 +21,7 @@ Version     : v0.0.0
   nap - nightmare(less) application platform
 
   nap is a configurable and extensible set of tools and templates that
-  makes it easer to manage and deploy web applications.
+  makes it easier to manage and deploy web applications.
 
     * Have new apps running in seconds.
     * Get a quick overview of running apps.
