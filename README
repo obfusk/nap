@@ -33,7 +33,7 @@ Version     : v0.0.0
 
 === Usage ===                                                     {{{1
 
-  See also doc/type-*.
+  See also doc/type-{ruby,clj,...}.
 
 
   === The nap command ===                                         {{{2
