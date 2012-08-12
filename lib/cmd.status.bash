@@ -11,7 +11,7 @@
 #
 # --                                                            # }}}1
 
-nap_cmd_usage='nap status <name> [-q]'
+nap_cmd_usage='nap status <name> [ -q | -s ]'
 
 loadlib 'cmd._defaults'
 
@@ -22,18 +22,18 @@ loadlib 'cmd._defaults'
 function nap_cmd_run () {                                       # {{{1
   nap_cmd_run_prepare_d 1 2 "$@"
 
-  local q="$2"
-  [ -z "$q" -o "$q" == '-q' ] || die "$nap_cmd_usage" usage
+  local a="$2"
+  [[ -z "$a" || "$a" == -[qs] ]] || die "$nap_cmd_usage" usage
 
   olog 'showing status ...'
-  [ "$q" == '-q' ] || ohai "[status] \`$cfg_name'"
+  [ -z "$a" ] && ohai "[status] \`$cfg_name'"
 
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
-  nap_type_status ${q:+"$q"}
+  nap_type_status "${a:--n}"
 
-  [ "$q" == '-q' ] || ohai '[done]'
+  [ -z "$a" ] && ohai '[done]'
   olog 'status shown.'
 }                                                               # }}}1
 

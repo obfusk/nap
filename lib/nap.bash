@@ -36,20 +36,18 @@ nap_app_pidfile=
 
 # --
 
-if [ "$( tty )" == 'not a tty' ]; then                          # {{{1
-  is_tty=n
-
-  colour_blu=
-  colour_whi=
-  colour_red=
-  colour_non=
-else
-  is_tty=y
-
+if [ -t 1 ]; then                                               # {{{1
+  colour_non='\033[0m'
+  colour_red='\033[1;31m'
+  colour_grn='\033[1;32m'
   colour_blu='\033[1;34m'
   colour_whi='\033[1;37m'
-  colour_red='\033[1;31m'
-  colour_non='\033[0m'
+else
+  colour_non=
+  colour_red=
+  colour_grn=
+  colour_blu=
+  colour_whi=
 fi                                                              # }}}1
 
 # --

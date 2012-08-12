@@ -36,7 +36,10 @@ if [ "$1" == help ]; then
     Commands  : list, ${commands//\|/, }
 __END
 elif [ "$#" -eq 0 ]; then
-  die "TODO"
+  cols="$( tput cols )" pos="$(( cols / 2 - 1 ))"
+  for x in "${apps[@]}"; do
+    printf "%-${pos}s " "$x"; nap status "$x" -s
+  done
 else
   cmd="$1"; shift
 

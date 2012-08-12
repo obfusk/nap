@@ -65,7 +65,7 @@ function nap_helper_daemon_chk () {                             # {{{1
   [ -z "$cmd" ] && return 1
 
   if [ "$name" != "$c" ]; then
-    opoo "process with PID $pid has command \`$c';"
+    opoo "process with pid $pid has command \`$c';"
     opoo "was expecting \`$name'"
   fi
 }                                                               # }}}1
@@ -115,17 +115,30 @@ function nap_helper_daemon_status () {                          # {{{1
   fi
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_status_info <name>
+function nap_helper_daemon_age () { ps -p "$1" -o etime= | tr -d ' '; }
+
+# Usage: nap_helper_daemon_status_info <name> -[nqs]
 # Human-readable version of nap_helper_daemon_status.
 function nap_helper_daemon_status_info () {                     # {{{1
-  local name="$1"
+  local name="$1" a="$2"
   local status="$( nap_helper_daemon_status "$name" )"
+  local c r=n q="$status" x=
 
-  if [ "$status" != stopped -a "$status" != dead ]; then
-    echo "running (PID=$status)"
-  else
-    echo "$status"
+  case "$status" in
+    stopped)  c="$colour_blu" ;;
+    dead)     c="$colour_red" ;;
+    *)        c="$colour_grn" q=running r=y ;;
+  esac
+
+  if [[ "$r" == y && "$a" == -[ns] ]]; then
+    x=" ($( nap_helper_daemon_age "$status" ) pid=$status)"
   fi
+
+  case "$a" in
+    -q) echo "$q" ;;
+    -s) echo -e "${c}${q}${colour_non}${x}" ;;
+    *)  ohai "[$name is ${q}${x}]" ;;
+  esac
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_running <name> [warn]
@@ -160,7 +173,7 @@ function nap_helper_daemon_start () {                           # {{{1
   local status="$( nap_helper_daemon_status "$name" )"
 
   if [ "$status" != stopped -a "$status" != dead ]; then
-    opoo "$name is running (PID=$status)"
+    opoo "$name is running (pid=$status)"
   else
     ohai "$info"
     dpush "$nap_app_app"
