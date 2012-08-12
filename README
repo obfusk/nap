@@ -2,42 +2,105 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-06
+Date        : 2012-08-12
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.0.0
 
 --                                                                }}}1
 
+=== NB ===                                                        {{{1
+
+  While nap should be usable at this time, I have not yet finished
+  testing everything on my server.  There may be some bugs I haven't
+  encountered yet.  Hence v0.0.0.
+                                                                  }}}1
+
 === Description ===                                               {{{1
 
-  nap - nightmare application platform
+  nap - nightmare(less) application platform
 
-  ...
+  nap is a configurable and extensible set of tools and templates that
+  makes it easer to manage and deploy web applications.
+
+  With nap, you can:
+    * Have new apps running in seconds.
+    * Get a quick overview of running apps.
+    * Update an app in seconds with a single command.
+    * Allow developers to have their apps updated automatically when
+      they push their code to the server.
                                                                   }}}1
 
 === Usage ===                                                     {{{1
 
-  === The nap command ===
-
-    nap <command> [ <arg(s)> ]
+  See also doc/type-*.
 
 
-    === Commands ===
+  === The nap command ===                                         {{{2
 
-      ...
+    nap { <command> [<arg(s)>] | help [<command>] }
+
+    nap new       <name> <type> <repo> [<opt(s)>]
+    nap bootstrap <name>
+    nap update    <name>
+    nap start     <name>
+    nap stop      <name>
+    nap restart   <name>
+    nap status    <name> [ -q | -s ]
+
+
+    === Commands ===                                              {{{3
+
+      new         creates a new app with <type>, cloned from <repo>,
+                  with <opt(s)> (e.g. branch, server name, port)
+      bootstrap   installs dependencies
+      update      stops (if running), pulls from <repo>, updates
+                  dependencies, restarts (if running)
+      start       starts
+      stop        stops
+      restart     restarts (if running)
+      status      shows status
+                                                                  }}}3
+                                                                  }}}2
+
+  === The naps command ===                                        {{{2
+
+    naps [ <command> [<app(s)>] | help ]
+
+    naps
+    naps list
+    naps { update | start | stop | restart | status } [<app(s)>]
+
+
+    === Commands ===                                              {{{3
+
+      naps          shows the status of all apps
+      naps list     lists all apps
+
+      naps { update | start | stop | restart | status }
+                    runs >> nap <command> <app> << for all apps
+                    specified (or all apps if none are specified)
+                                                                  }}}3
+                                                                  }}}2
                                                                   }}}1
 
 === Installing ===                                                {{{1
 
   Get it at https://github.com/obfusk/nap.
 
-  ...
+  See doc/my-server for an example server setup.
                                                                   }}}1
 
 === Depends ===                                                   {{{1
 
-  ...
+  * unix (tested on linux and osx)
+  * bash
+  * git
+
+  Each app type (e.g. ruby, clojure) comes with its own dependencies.
+
+  The only vcs currently supported is git, but others should be easy
+  to implement.
                                                                   }}}1
 
 === TODO ===                                                      {{{1
