@@ -25,16 +25,13 @@ function nap_cmd_run () {                                       # {{{1
   local a="$2"
   [[ -z "$a" || "$a" == -[qs] ]] || die "$nap_cmd_usage" usage
 
-  olog 'showing status ...'
   [ -z "$a" ] && ohai "[status] \`$cfg_name'"
 
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_type_status "${a:--n}"
-
   [ -z "$a" ] && ohai '[done]'
-  olog 'status shown.'
 }                                                               # }}}1
 
 # Usage: nap_cmd_help
