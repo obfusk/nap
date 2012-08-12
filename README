@@ -13,7 +13,7 @@ Version     : v0.0.0
 
   While nap should be usable at this time, I have not yet finished
   testing everything on my server.  There may be some bugs I haven't
-  encountered yet.  Hence v0.0.0.
+  encountered yet.  Hence v0.0.0.                                 TODO
                                                                   }}}1
 
 === Description ===                                               {{{1
@@ -104,7 +104,7 @@ Version     : v0.0.0
   Each app type (e.g. ruby, clojure) comes with its own dependencies.
 
   The only vcs currently supported is git, but others should be easy
-  to implement.
+  to implement.                                                   TODO
                                                                   }}}1
 
 === TODO ===                                                      {{{1
