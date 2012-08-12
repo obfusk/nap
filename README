@@ -51,15 +51,19 @@ Version     : v0.0.0
 
     === Commands ===                                              {{{3
 
-      new         creates a new app with <type>, cloned from <repo>,
-                  with <opt(s)> (e.g. branch, server name, port)
-      bootstrap   installs dependencies
-      update      stops (if running), pulls from <repo>, updates
-                  dependencies, restarts (if running)
-      start       starts
-      stop        stops
-      restart     restarts (if running)
-      status      shows status
+      new         Creates a new app with <type>, cloned from <repo>.
+                  Options:
+                    vcs=...                 default is git
+                    branch=...              default is master
+                    <type>.<option>=...
+
+      bootstrap   Installs dependencies.
+      update      Stops (if running), pulls from <repo>, updates
+                  dependencies, restarts (if running).
+      start       Starts.
+      stop        Stops.
+      restart     Restarts (if running).
+      status      Shows status.
                                                                   }}}3
                                                                   }}}2
 
@@ -74,12 +78,12 @@ Version     : v0.0.0
 
     === Commands ===                                              {{{3
 
-      naps          shows the status of all apps
-      naps list     lists all apps
+      naps          Shows the status of all apps.
+      naps list     Lists all apps.
 
       naps { update | start | stop | restart | status }
-                    runs >> nap <command> <app> << for all apps
-                    specified (or all apps if none are specified)
+                    Runs >> nap <command> <app> << for all apps
+                    specified (or all apps if none are specified).
                                                                   }}}3
                                                                   }}}2
                                                                   }}}1
