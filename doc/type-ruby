@@ -11,8 +11,8 @@ Version     : v0.0.0
 
 === The ruby type ===                                             {{{1
 
-  This type is for all sorts of ruby-based applications, like rails,
-  sinatra etc.
+  This type is for all sorts of ruby-based application frameworks,
+  like rails, sinatra etc.
 
   The template is found in >> lib/type.ruby.bash <<.  Feel free to
   fork, improve etc.
