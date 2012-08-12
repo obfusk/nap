@@ -2,7 +2,7 @@
 
 File        : doc/my-server
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-11
+Date        : 2012-08-12
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
@@ -10,7 +10,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
 === NB ===                                                        {{{1
 
-  This is my own server setup; YMVV.
+  This is my own server setup; YMVV.  You will definitely have
+  different users, repositories etc.
                                                                   }}}1
 
 === VM ===                                                        {{{1
@@ -33,7 +34,9 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
   === w/ sudo ===                                                 {{{2
 
-    === other ===                                                 {{{3
+    === for felix ===                                             {{{3
+
+      Optional; for myself only.
 
       $ vim /etc/network/interfaces
 
@@ -51,6 +54,9 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ adduser --system --group --home /__nap/apps \
         --disabled-password nap
+
+      $ mkdir /__nap/log
+      $ chown nap:nap /__nap/log
 
       $ git clone https://github.com/obfusk/nap.git /__nap/nap
 
@@ -70,6 +76,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     === nginx ===                                                 {{{3
 
+      Optional; only if you want to use nginx (e.g. as reverse proxy).
+
       $ aptitude install nginx-full
 
       $ rm -i /etc/nginx/sites-enabled/default
@@ -79,6 +87,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     === ruby ===                                                  {{{3
 
+      Optional; for ruby apps w/ rbenv only.
+
       $ aptitude install build-essential zlib1g-dev libssl-dev \
         libreadline-gplv2-dev
 
@@ -87,10 +97,14 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     === clojure ===                                               {{{3
 
+      Optional; for clojure apps only.
+
       $ aptitude install leiningen
                                                                   }}}3
 
     === gitolite ===                                              {{{3
+
+      Optional; only if you want to use gitolite as a git server.
 
       $ aptitude install gitolite
       $ dpkg-reconfigure gitolite   # user: git; repo: /__git
@@ -103,6 +117,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
 
     === rbenv ===                                                 {{{3
+
+      Optional; only if you want to use rbenv for ruby apps.
 
       See https://github.com/sstephenson/rbenv/wiki/Using-rbenv-in-production.
 
@@ -121,6 +137,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
     === ruby ===                                                  {{{3
 
+      Optional; only if you want to use unicorn for ruby apps.
+
       $ gem install bundler unicorn
                                                                   }}}3
 
@@ -135,6 +153,9 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
   === as git ===                                                  {{{2
 
+    Optional; only if you use gitolite and want to give developers
+    push access.
+
     Run >> sudo -H -u git bash -l << to switch to the git user.
 
     $ cd ~/.gitolite/hooks/common
@@ -145,11 +166,15 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
   === as felix ===                                                {{{2
 
+    Optional; for myself only.
+
     $ byobu-select-backend          # screen; ^a too
     $ mkdir ~/.ssh ; cat __key__ >> ~/.ssh/authorized_keys
                                                                   }}}2
 
   === gitolite ===                                                {{{2
+
+    Optional; for gitolite only; you'll have other users and repos.
 
     * user: admin -> felix, @admins = felix
     * repo: - testing
