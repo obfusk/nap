@@ -1,0 +1,37 @@
+--                                                                {{{1
+
+File        : type-clj
+Maintainer  : Felix C. Stegerman <flx@obfusk.net>
+Date        : 2012-08-12
+
+Copyright   : Copyright (C) 2012  Felix C. Stegerman
+Version     : v0.0.0
+
+--                                                                }}}1
+
+=== The clj (clojure) type ===                                    {{{1
+
+  This type is for all sorts of clojure-based application frameworks,
+  like noir.
+
+  The template is found in >> lib/type.clj.bash <<.  Feel free to
+  fork, improve etc.
+
+  The command used to install dependencies is >> lein deps <<.
+
+
+  === Options ===                                                 {{{2
+
+    These can be passed to >> nap new <<.
+
+    clj.server      Currently only used for the generated nginx
+                    Reverse proxy configuration file.             TODO
+    clj.port        Exported as PORT to be used by clj.cmd.
+    clj.cmd         Optional.  The command used to start the server.
+                    The default is 'lein run :prod'.
+                                                                  }}}2
+                                                                  }}}1
+
+--
+
+vim: set tw=70 sw=2 sts=2 et fdm=marker :
