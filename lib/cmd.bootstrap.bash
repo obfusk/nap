@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.bootstrap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-12
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -34,6 +34,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_bootstrap_info
 
   olog 'bootstrapped.'
+  return 0
 }                                                               # }}}1
 
 # Usage: nap_cmd_help

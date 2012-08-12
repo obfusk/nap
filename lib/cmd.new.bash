@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-12
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -68,6 +68,7 @@ function nap_cmd_run () {                                       # {{{1
   ohai '[done]'
 
   olog "app \`$cfg_name' created."
+  return 0
 }                                                               # }}}1
 
 # Usage: nap_cmd_help
