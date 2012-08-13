@@ -149,6 +149,14 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
       $ cp -i /__nap/nap/etc/napenv.sample ~/.napenv
                                                                   }}}3
+
+    === gitolite ===                                              {{{3
+
+      Optional; for gitolite only.
+
+      $ ssh-keygen -C nap   # No passwd; you'll need to add the
+                            # user/key to gitolite; see gitolite.
+                                                                  }}}3
                                                                   }}}2
 
   === as git ===                                                  {{{2
@@ -179,8 +187,8 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
     * user: admin -> felix, @admins = felix
     * repo: - testing
 
-    * user: + alice, bob
-    * repo: + nap-hello (felix, alice, bob)
+    * user: + alice, bob, nap
+    * repo: + nap-hello (RW+: felix, alice, bob; R: nap)
                                                                   }}}2
                                                                   }}}1
 
