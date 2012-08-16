@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-16
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -28,10 +28,10 @@ fi
 
 # --
 
-# Usage: nap_helper_daemon_nginx <server> <port>
+# Usage: nap_helper_daemon_nginx_port <server> <port>
 # Creates nginx config; sets $nap_helper_daemon_nginx_conf; dies on
 # failure.
-function nap_helper_daemon_nginx () {                           # {{{1
+function nap_helper_daemon_nginx_port () {                      # {{{1
   local server="$1" port="$2"
 
   loadlib 'helper.nginx'
@@ -43,8 +43,27 @@ function nap_helper_daemon_nginx () {                           # {{{1
     cfg_nginx_host=localhost
      cfg_nginx_log="$nap_app_log"
 
-  ohai '[nginx mkcfg]'
-  try '[nginx mkcfg] failed' nap_helper_nginx_mkcfg \
+  ohai '[nginx (port) mkcfg]'
+  try '[nginx (port) mkcfg] failed' nap_helper_nginx_port_mkcfg \
+    "$nap_helper_daemon_nginx_conf"
+}                                                               # }}}1
+
+# Usage: nap_helper_daemon_nginx_sock <server>
+# Creates nginx config; sets $nap_helper_daemon_nginx_conf; dies on
+# failure.
+function nap_helper_daemon_nginx_sock () {                      # {{{1
+  local server="$1"
+
+  loadlib 'helper.nginx'
+
+  nap_helper_daemon_nginx_conf="$nap_app_cfg/nginx.conf"
+
+  cfg_nginx_server="$server"
+    cfg_nginx_sock="$nap_app_run/deamon.sock"
+     cfg_nginx_log="$nap_app_log"
+
+  ohai '[nginx (socket) mkcfg]'
+  try '[nginx (socket) mkcfg] failed' nap_helper_nginx_sock_mkcfg \
     "$nap_helper_daemon_nginx_conf"
 }                                                               # }}}1
 
