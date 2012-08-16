@@ -68,7 +68,7 @@ function nap_type_bootstrap () {                                # {{{1
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
-  if [[ "$cfg_ruby_nginx" == ^(port|sock)$ ]]; then
+  if [[ "$cfg_ruby_nginx" =~ ^(port|sock)$ ]]; then
     ohai 'Caveats'
     nap_helper_nginx_info "ruby ($cfg_ruby_cmd)" \
       "$nap_helper_daemon_nginx_conf"
