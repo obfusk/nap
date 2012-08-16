@@ -4,7 +4,7 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-16
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -20,7 +20,7 @@
 
 # --
 
-nap_type_opts=( server port cmd )
+nap_type_opts=( nginx server port cmd )
 cfg_clj_cmd_d='lein run :prod'
 
 loadlib 'helper.daemon'
@@ -30,6 +30,7 @@ loadlib 'helper.daemon'
 # Usage: nap_type_validate_opts
 # Validates cfg_clj_*; sets default cfg_clj_cmd.
 function nap_type_validate_opts () {                            # {{{1
+  validate "$cfg_clj_nginx"   '(|port)'   'invalid clj.nginx'
   validate "$cfg_clj_server"  "$chk_host" 'invalid clj.server'
   validate "$cfg_clj_port"    "$chk_port" 'invalid clj.port'
 
@@ -46,15 +47,19 @@ function nap_type_install_deps () {                             # {{{1
 # Usage: nap_type_bootstrap
 # Bootstraps; dies on failure.
 function nap_type_bootstrap () {                                # {{{1
-  nap_helper_daemon_nginx "$cfg_clj_server" "$cfg_clj_port"
+  if [ "$cfg_clj_nginx" == port ]; then
+    nap_helper_daemon_nginx_port "$cfg_clj_server" "$cfg_clj_port"
+  fi
 }                                                               # }}}1
 
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
-  ohai 'Caveats'
-  nap_helper_nginx_info "clojure ($cfg_clj_cmd)" \
-    "$nap_helper_daemon_nginx_conf"
+  if [ "$cfg_clj_nginx" == port ]; then
+    ohai 'Caveats'
+    nap_helper_nginx_info "clojure ($cfg_clj_cmd)" \
+      "$nap_helper_daemon_nginx_conf"
+  fi
 }                                                               # }}}1
 
 # --
