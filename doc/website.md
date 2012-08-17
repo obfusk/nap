@@ -8,9 +8,9 @@ makes it easier to manage and deploy web applications.
     they push their code to the server.
 
 --&gt;
-[README][readme]
-[The ruby type][t-ruby]
-[The clojure type][t-clj]
+[README][readme],
+[The ruby type][t-ruby],
+[The clojure type][t-clj],
 [My server setup][my-srv]
 
 <br/>
@@ -18,28 +18,32 @@ makes it easier to manage and deploy web applications.
 ### Adding an app
 
     $ nap new hello ruby https://github.com/obfusk/nap-hello.git \
-      ruby.server=localhost ruby.port=3001
+      ruby.port=3001
     $ nap bootstrap hello
     $ nap start hello
 
 ### Screenshots
 
+[nap new/bootstrap/start][i-new] <br/>
 ![nap new/bootstrap/start][i-new]
+
+[naps][i-naps] <br/>
 ![naps][i-naps]
 
-### Screenshot links
-
-[nap new/bootstrap/start][i-new]
-[naps][i-naps]
+[push][i-push] <br/>
+![push][i-push]
 
 <br/>
 
-Copyright (C) 2012  Felix C. Stegerman  --  2012-08-12  --  v0.0.0
+<small>
+Copyright (C) 2012  Felix C. Stegerman  --  2012-08-17  --  v0.0.0
+</small>
 
 [readme]: https://github.com/obfusk/nap#readme
-[t-ruby]: https://github.com/obfusk/nap/blob/master/doc/type-clj
-[t-clj]:  https://github.com/obfusk/nap/blob/master/doc/type-ruby
+[t-ruby]: https://github.com/obfusk/nap/blob/master/doc/type-ruby
+[t-clj]:  https://github.com/obfusk/nap/blob/master/doc/type-clj
 [my-srv]: https://github.com/obfusk/nap/blob/master/doc/my-server
 
-[i-new]:  https://github.com/downloads/obfusk/nap/new_boot_start.png
-[i-naps]: https://github.com/downloads/obfusk/nap/naps.png
+[i-new]:  https://raw.github.com/obfusk/nap-misc/master/img/new_boot_start.png
+[i-naps]: https://raw.github.com/obfusk/nap-misc/master/img/naps.png
+[i-push]: https://raw.github.com/obfusk/nap-misc/master/img/push.png
