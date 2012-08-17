@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-16
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -29,18 +29,21 @@ loadlib 'helper.daemon'
 # Usage: nap_type_validate_opts
 # Validates cfg_ruby_*; sets default cfg_ruby_cmd.
 function nap_type_validate_opts () {                            # {{{1
-  validate "$cfg_ruby_nginx"  '(|port|sock)'  'invalid ruby.nginx'
-  validate "$cfg_ruby_server" "$chk_host"     'invalid ruby.server'
+  validate "$cfg_ruby_nginx" '|port|sock' 'invalid ruby.nginx'
 
-  case "$cfg_ruby_nginx" in
-    ''|port)
-      validate "$cfg_ruby_port" "$chk_port" 'invalid ruby.port'
-    ;;
-    sock)
-      [ -z "$cfg_ruby_port" ] \
-        || fail 'invalid: ruby.port w/ ruby.nginx == sock'
-    ;;
-  esac
+  if [ -n "$cfg_ruby_nginx" ]; then
+    validate "$cfg_ruby_server" "$chk_host" 'invalid ruby.server'
+  else
+    [ -z "$cfg_ruby_server" ] \
+      || fail 'invalid: ruby.server w/o ruby.nginx'
+  fi
+
+  if [ "$cfg_ruby_nginx" == sock ]; then
+    [ -z "$cfg_ruby_port" ] \
+      || fail 'invalid: ruby.port w/ ruby.nginx == sock'
+  else
+    validate "$cfg_ruby_port" "$chk_num" 'invalid ruby.port'
+  fi
 
   # don't validate $cfg_ruby_cmd -- is command line
   : ${cfg_ruby_cmd:="$cfg_ruby_cmd_d"}

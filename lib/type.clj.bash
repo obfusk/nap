@@ -4,7 +4,7 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-16
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -30,9 +30,15 @@ loadlib 'helper.daemon'
 # Usage: nap_type_validate_opts
 # Validates cfg_clj_*; sets default cfg_clj_cmd.
 function nap_type_validate_opts () {                            # {{{1
-  validate "$cfg_clj_nginx"   '(|port)'   'invalid clj.nginx'
-  validate "$cfg_clj_server"  "$chk_host" 'invalid clj.server'
-  validate "$cfg_clj_port"    "$chk_port" 'invalid clj.port'
+  validate "$cfg_clj_nginx" '|port'     'invalid clj.nginx'
+  validate "$cfg_clj_port"  "$chk_num"  'invalid clj.port'
+
+  if [ -n "$cfg_clj_nginx" ]; then
+    validate "$cfg_clj_server" "$chk_host" 'invalid clj.server'
+  else
+    [ -z "$cfg_clj_server" ] \
+      || fail 'invalid: clj.server w/o clj.nginx'
+  fi
 
   # don't validate $cfg_clj_cmd -- is command line
   : ${cfg_clj_cmd:="$cfg_clj_cmd_d"}
