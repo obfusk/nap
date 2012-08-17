@@ -2,7 +2,7 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-12
+Date        : 2012-08-17
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.0.0
@@ -11,9 +11,9 @@ Version     : v0.0.0
 
 === NB ===                                                        {{{1
 
-  While nap should be usable at this time, I have not yet finished
-  testing everything on my server.  There may be some bugs I haven't
-  encountered yet.  Hence v0.0.0.                                 TODO
+  Nap is still a work in progress.  It should be usable, but it's
+  still evolving and changing in backwards-incompatible ways.  Hence
+  v0.0.0.                                                         TODO
                                                                   }}}1
 
 === Description ===                                               {{{1
@@ -108,9 +108,9 @@ Version     : v0.0.0
 
 === TODO ===                                                      {{{1
 
-  * test server(s)
+  * test server(s) (almost done)
   * fix small things
-  * keep documentation op to date w/ improvements
+  * keep documentation up to date w/ improvements
 
   ...
                                                                   }}}1
