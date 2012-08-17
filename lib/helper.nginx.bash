@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.nginx.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-16
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -21,7 +21,7 @@ fi
 
 # Usage: nap_helper_nginx_port_mkcfg <file>
 # Writes config file; returns non-zero on failure.
-# Uses $cfg_nginx_{server,log,host,port}, $cfg_name.
+# Uses $cfg_nginx_{server,log,host,port}.
 function nap_helper_nginx_port_mkcfg () {                       # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
@@ -29,8 +29,8 @@ function nap_helper_nginx_port_mkcfg () {                       # {{{1
       listen      80;
       server_name $cfg_nginx_server;
 
-      access_log  $cfg_nginx_log/$cfg_name-access.log;
-      error_log   $cfg_nginx_log/$cfg_name-error.log;
+      access_log  $cfg_nginx_log/nginx-access.log;
+      error_log   $cfg_nginx_log/nginx-error.log;
 
       location / {
         proxy_pass http://$cfg_nginx_host:$cfg_nginx_port;
@@ -41,7 +41,7 @@ __END
 
 # Usage: nap_helper_nginx_sock_mkcfg <file>
 # Writes config file; returns non-zero on failure.
-# Uses $cfg_nginx_{server,log,host,sock}, $cfg_name.
+# Uses $cfg_nginx_{server,log,sock}, $cfg_name.
 function nap_helper_nginx_sock_mkcfg () {                       # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
@@ -53,8 +53,8 @@ function nap_helper_nginx_sock_mkcfg () {                       # {{{1
       listen      80;
       server_name $cfg_nginx_server;
 
-      access_log  $cfg_nginx_log/$cfg_name-access.log;
-      error_log   $cfg_nginx_log/$cfg_name-error.log;
+      access_log  $cfg_nginx_log/nginx-access.log;
+      error_log   $cfg_nginx_log/nginx-error.log;
 
       location / {
         proxy_set_header  X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -74,7 +74,7 @@ function nap_helper_nginx_info () {                             # {{{1
     Your $t app has been bootstrapped.
     You now need to copy the nginx.conf file to the appropriate
     location:
-      $ cp $f /path/to/nginx/conf/
+      $ cp $f ...
     And restart nginx:
       $ service nginx restart
 __END

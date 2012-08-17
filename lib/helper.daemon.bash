@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-16
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
