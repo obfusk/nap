@@ -4,7 +4,7 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -55,10 +55,10 @@ fi                                                              # }}}1
 # === ckh_* ===                                                 # {{{1
 
 chk_word='[a-z0-9_-]+'
-chk_wnil='[a-z0-9_-]*'
- chk_url='[a-z0-9A-Z@.:/_-]+'
+ chk_num='[0-9]+'
+
 chk_host='[a-z0-9.-]+'
-chk_port='[0-9]+'
+ chk_url='[a-z0-9A-Z@.:/_-]+'
                                                                 # }}}1
 
 # --
