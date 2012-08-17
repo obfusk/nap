@@ -2,7 +2,7 @@
 
 File        : type-clj
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-12
+Date        : 2012-08-17
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.0.0
@@ -24,11 +24,23 @@ Version     : v0.0.0
 
     These can be passed to >> nap new <<.
 
-    clj.server      Currently only used for the generated nginx
-                    Reverse proxy configuration file.             TODO
-    clj.port        Exported as PORT to be used by clj.cmd.
-    clj.cmd         Optional.  The command used to start the server.
-                    The default is 'lein run :prod'.
+    clj.nginx
+      Optional; can be set to 'port'.  Will generate an nginx.conf
+      file you can copy to an appropriate location.  Requires you to
+      set clj.server.
+
+    clj.server
+      The virtual server.  You must set this if you use clj.nginx.
+
+    clj.port
+      The port the server listens on.  You must set this.
+
+    clj.cmd
+      Optional.  The command used to start the server.  The default is
+      'lein run :prod'.
+
+      For a more advanced configuration, you can use e.g. 'foreman
+      start' with a Procfile; PORT is available as an envvar.
                                                                   }}}2
                                                                   }}}1
 

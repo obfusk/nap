@@ -2,7 +2,7 @@
 
 File        : type-ruby
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-12
+Date        : 2012-08-17
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.0.0
@@ -24,13 +24,26 @@ Version     : v0.0.0
 
     These can be passed to >> nap new <<.
 
-    ruby.server     Currently only used for the generated nginx
-                    reverse proxy configuration file.             TODO
-    ruby.port       Exported as PORT and used by ruby.cmd.
-    ruby.cmd        Optional.  The command used to start the server.
-                    The default is 'unicorn -E production -p ${PORT}'.
-                    All occurences of '${PORT}' are replaced by
-                    ruby.port.
+    ruby.nginx
+      Optional; either 'port' or 'sock'.  Will generate an nginx.conf
+      file you can copy to an appropriate location.  Requires you to
+      set ruby.server.  With ruby.nginx=port, requires you to set
+      ruby.port.
+
+    ruby.server
+      The virtual server.  You must set this if you use ruby.nginx.
+
+    ruby.port
+      The port the server listens on.  You must set this unless you
+      use ruby.nginx=sock.
+
+    ruby.cmd
+      Optional.  The command used to start the server.  The default is
+      'unicorn -E production ${LISTEN}'.  All occurences of
+      '${LISTEN}' are replaced by either '-p $PORT' or '-l $SOCKET'.
+
+      For a more advanced configuration, you can use e.g. 'foreman
+      start' with a Procfile; PORT/SOCKET are available as envvars.
                                                                   }}}2
                                                                   }}}1
 
