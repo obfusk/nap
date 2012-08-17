@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-12
+# Date        : 2012-08-17
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -35,8 +35,8 @@ function nap_cmd_run_prepare () {                               # {{{1
 
   parse_opts_handled "$opts" "$@"
 
-  validate "$cfg_vcs"     "$chk_word" 'invalid vcs'
-  validate "$cfg_branch"  "$chk_wnil" 'invalid branch'
+  validate "$cfg_vcs"     "$chk_word"   'invalid vcs'
+  validate "$cfg_branch"  "|$chk_word"  'invalid branch'
 
   nap_type_validate_opts
 
