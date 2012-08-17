@@ -2,7 +2,7 @@
 
 File        : doc/my-server
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-12
+Date        : 2012-08-17
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
@@ -81,6 +81,11 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
       $ aptitude install nginx-full
 
       $ rm -i /etc/nginx/sites-enabled/default
+
+      $ vim /etc/nginx/nginx.conf
+        #          include /etc/nginx/sites-enabled/*;
+        # +        include /__nap/cfg/nginx/*.conf;
+        #  }
 
       $ service nginx start   # also: restart
                                                                   }}}3
