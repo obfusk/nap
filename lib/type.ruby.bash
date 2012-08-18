@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-17
+# Date        : 2012-08-18
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -29,7 +29,7 @@ loadlib 'helper.daemon'
 # Usage: nap_type_validate_opts
 # Validates cfg_ruby_*; sets default cfg_ruby_cmd.
 function nap_type_validate_opts () {                            # {{{1
-  validate "$cfg_ruby_nginx" '|port|sock' 'invalid ruby.nginx'
+  validate "$cfg_ruby_nginx" '()|port|sock' 'invalid ruby.nginx'
 
   if [ -n "$cfg_ruby_nginx" ]; then
     validate "$cfg_ruby_server" "$chk_host" 'invalid ruby.server'
