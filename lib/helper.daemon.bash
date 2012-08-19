@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-17
+# Date        : 2012-08-18
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -75,7 +75,7 @@ function nap_helper_daemon_getpid () {                          # {{{1
 
 # Usage: nap_helper_daemon_chk <pid> <name>
 # Checks if pid is alive; warns if name not equal to command; returns
-# non-zero if not alive.
+# non-zero if not alive.  NB: warning currently disabled.
 function nap_helper_daemon_chk () {                             # {{{1
   local pid="$1" name="$2"
   local cmd="$( ps -p "$pid" -o comm= )"
@@ -83,10 +83,12 @@ function nap_helper_daemon_chk () {                             # {{{1
 
   [ -z "$cmd" ] && return 1
 
-  if [ "$name" != "$c" ]; then
-    opoo "process with pid $pid has command \`$c';"
-    opoo "was expecting \`$name'"
-  fi
+  # if [ "$name" != "$c" ]; then
+  #   opoo "process with pid $pid has command \`$c';"
+  #   opoo "was expecting \`$name'"
+  # fi
+
+  return 0
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_chk_wait <n> <pid> <name>
