@@ -4,7 +4,7 @@
 #
 # File        : naps
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-18
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -33,7 +33,9 @@ shopt -u nullglob
 if [ "$1" == help ]; then
   sed 's!^    !!g' <<__END
     Usage     : $usage
-    Commands  : list, ${commands//\|/, }
+    Commands  : list, sap, ${commands//\|/, }
+
+    (sap means "start all [in] parallel")
 __END
 elif [ "$#" -eq 0 ]; then
   cols="$( tput cols )" pos="$(( cols / 2 - 1 ))"
@@ -43,13 +45,14 @@ elif [ "$#" -eq 0 ]; then
 else
   cmd="$1"; shift
 
+  if [ "$#" -eq 0 ]; then as=( "${apps[@]}" ); else as=( "$@" ); fi
+
   if [ "$cmd" == list ]; then
     for x in "${apps[@]}"; do echo "$x"; done
+  elif [ "$cmd" == sap ]; then
+    for x in "${as[@]}"; do nap start "$x" & done; wait
   elif [[ "$cmd" =~ ^($commands)$ ]]; then
-    if [ "$#" -eq 0 ]; then as=( "${apps[@]}" ); else as=( "$@" ); fi
-    for x in "${as[@]}"; do
-      nap "$cmd" "$x"; echo
-    done
+    for x in "${as[@]}"; do nap "$cmd" "$x"; echo; done
   else
     echo "error: unknown command \`$cmd'" >&2
     die "$usage" usage
