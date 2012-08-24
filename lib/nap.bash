@@ -4,7 +4,7 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-17
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -13,7 +13,9 @@
 
 # === cfg vars ===                                              # {{{1
 
-   nap_commands=( new bootstrap update start stop restart status )
+   nap_commands=( new bootstrap update  \
+                  start stop restart    \
+                  status info )
                                                                 # TODO
        nap_cfgs=( type repo vcs branch )
 
@@ -187,14 +189,14 @@ __END
 function nap_mkcfg () {                                         # {{{1
   local f="$1"
   sed 's!^    !!g' <<__END > "$f"
-    # the basics
+    # basic configuration
 
     $(  for x in "${nap_cfgs[@]}"; do
           eval "y=\$cfg_$x"
           echo "cfg_$x=$( qsh "$y" )"
         done  )
 
-    # the specifics
+    # type-specific configuration
 
     $(  for x in "${nap_type_opts[@]}"; do
           eval "y=\$cfg_${cfg_type}_$x"
@@ -203,6 +205,25 @@ function nap_mkcfg () {                                         # {{{1
 
     # --
 __END
+}                                                               # }}}1
+
+# Usage: nap_showcfg [-q]
+# Shows cfg_*.
+function nap_showcfg () {                                       # {{{1
+  local q="$1" pre=
+  [ "$q" == -q ] || pre='  '
+
+  [ "$q" == -q ] || ohai "Basic Configuration"
+  for x in "${nap_cfgs[@]}"; do
+    eval "y=\$cfg_$x"
+    printf "%-19s : %s\n" "$pre$x" "$y"
+  done
+
+  [ "$q" == -q ] || ohai "Type-Specific Configuration"
+  for x in "${nap_type_opts[@]}"; do
+    eval "y=\$cfg_${cfg_type}_$x"
+    printf "%-19s : %s\n" "$pre$cfg_type.$x" "$y"
+  done
 }                                                               # }}}1
 
 # Usage: nap_mkpid <file> <pid>
