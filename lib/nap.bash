@@ -11,11 +11,13 @@
 #
 # --                                                            # }}}1
 
+export LC_COLLATE=C
+
 # === cfg vars ===                                              # {{{1
 
    nap_commands=( new bootstrap update  \
                   start stop restart    \
-                  status info )
+                  status info log       )
                                                                 # TODO
        nap_cfgs=( type repo vcs branch )
 
@@ -28,6 +30,8 @@
     nap_app_log=
 nap_app_cfgfile=
 nap_app_pidfile=
+
+       nap_logs=()
 
        cfg_name=
        cfg_type=
@@ -75,7 +79,7 @@ function nap_app_set () {                                       # {{{1
       nap_app_run="$nap_app/run"
   nap_app_cfgfile="$nap_app_cfg/napprc"
   nap_app_logfile="$nap_app_log/nap.log"
-  nap_app_pidfile="$nap_app_run/deamon.pid"
+  nap_app_pidfile="$nap_app_run/daemon.pid"
 
     nap_logfiles+=( "$nap_app_logfile" )
 }                                                               # }}}1
@@ -229,6 +233,55 @@ function nap_showcfg () {                                       # {{{1
 # Usage: nap_mkpid <file> <pid>
 # Writes pid to file; returns non-zero on failure.
 function nap_mkpid () { local f="$1" pid="$2"; echo "$pid" > "$f"; }
+
+# --
+
+# TODO {
+
+# Usage: nap_logs
+# Sets $nap_logs.
+function nap_logs () {                                          # {{{1
+  shopt -s nullglob
+  nap_logs=( "$nap_app_log"/*.log )
+  shopt -u nullglob
+}                                                               # }}}1
+
+function nap_log_list () {
+  local x
+  for x in "${nap_logs[@]}"; do echo "$( basename "$x" )"; done
+}
+
+function nap_log_files () {
+  local x
+  for x in "${nap_logs[@]}"; do echo "$x"; done
+}
+
+# Usage: nap_log_tail <n> [<log(s)>]
+# ...
+function nap_log_tail () {                                      # {{{1
+  local n="$1" logs=() x cmd; shift
+
+  if [ "$#" -eq 0 ]; then
+    logs=( "${nap_logs[@]}" )
+  else
+    for x in "$@"; do logs+=( "$nap_app_log/$x".log ); done
+  fi
+
+  for x in "${logs[@]}"; do
+    ohai "$x"
+    try 'tail failed' tail -n "$n" -- "$x"
+  done
+}                                                               # }}}1
+
+function nap_log_monitor () {
+  local n="$1" x="$2"
+  local f="$nap_app_log/$x".log
+
+  ohai "$f"
+  tail -n "$n" -f -- "$f"
+}
+
+# } TODO
 
 # --
 
