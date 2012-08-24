@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-18
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -59,7 +59,7 @@ function nap_helper_daemon_nginx_sock () {                      # {{{1
   nap_helper_daemon_nginx_conf="$nap_app_cfg/nginx.conf"
 
   cfg_nginx_server="$server"
-    cfg_nginx_sock="$nap_app_run/deamon.sock"
+    cfg_nginx_sock="$nap_app_run/daemon.sock"
      cfg_nginx_log="$nap_app_log"
 
   ohai '[nginx (socket) mkcfg]'
@@ -198,8 +198,8 @@ function nap_helper_daemon_start () {                           # {{{1
   else
     ohai "$info"
     dpush "$nap_app_app"
-      $nohup "$@"  >> "$nap_app_log/deamon-stdout.log" \
-                  2>> "$nap_app_log/deamon-stderr.log" &
+      $nohup "$@"  >> "$nap_app_log/daemon-stdout.log" \
+                  2>> "$nap_app_log/daemon-stderr.log" &
       local pid=$!
     dpop
 
@@ -209,7 +209,7 @@ function nap_helper_daemon_start () {                           # {{{1
 }                                                               # }}}1
 
 # Usage: nap_helper_daemon_stop <info>
-# Stops deamon (if running) by killing pid; dies on failure.
+# Stops daemon (if running) by killing pid; dies on failure.
 function nap_helper_daemon_stop () {                            # {{{1
   local info="$1"
   local name="${info%% *}"

@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-18
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -81,7 +81,7 @@ function nap_type_bootstrap_info () {                           # {{{1
 # --
 
 # Usage: nap_type_status -[nqs]
-# Outputs deamon status.
+# Outputs daemon status.
 function nap_type_status () {                                   # {{{1
   nap_helper_daemon_status_info "${cfg_ruby_cmd%% *}" "$1"
 }                                                               # }}}1
@@ -98,7 +98,7 @@ function nap_type_start () {                                    # {{{1
   local cmd= sock= port=
 
   if [ "$cfg_ruby_nginx" == sock ]; then
-    sock="$nap_app_run/deamon.sock"
+    sock="$nap_app_run/daemon.sock"
     cmd="${cfg_ruby_cmd//\${LISTEN\}/-l $sock}"
     ohai "SOCKET=$sock"
   else

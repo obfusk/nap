@@ -4,7 +4,7 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-18
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -71,7 +71,7 @@ function nap_type_bootstrap_info () {                           # {{{1
 # --
 
 # Usage: nap_type_status -[nqs]
-# Outputs deamon status.
+# Outputs daemon status.
 function nap_type_status () {                                   # {{{1
   nap_helper_daemon_status_info "${cfg_clj_cmd%% *}" "$1"
 }                                                               # }}}1
