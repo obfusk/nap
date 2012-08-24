@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd._defaults.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-11
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -15,7 +15,7 @@
 # Parses opts.
 function nap_cmd_run_prepare_d () {                             # {{{1
   local usage="$nap_cmd_usage" n="$1" m="$2"; shift 2
-  [ "$#" -ge "$n" ] && [ -z "$m" -o "$#" -le "$m" ] \
+  [ "$#" -ge "$n" ] && ( [ -z "$m" ] || [ "$#" -le "$m" ] ) \
     || die "$usage" usage
   cfg_name="$1"; shift
 
