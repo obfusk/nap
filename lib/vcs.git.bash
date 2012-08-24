@@ -4,7 +4,7 @@
 #
 # File        : lib/vcs.git.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-10
+# Date        : 2012-08-24
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -30,6 +30,19 @@ function nap_vcs_pull () {                                      # {{{1
   dpush "$dir"
     ohai "$( join ' ' "${cmd[@]}" )"
     try 'git pull failed' "${cmd[@]}"
+  dpop
+}                                                               # }}}1
+
+# Usage: nap_vcs_log <dir> <n> [-v]
+# Shows log; dies on failure.
+function nap_vcs_log () {                                       # {{{1
+  local dir="$1" n="$2" v="$3"
+  local cmd=( git log -"$n" )
+  [ "$v" == -v ] || cmd+=( --oneline )
+
+  dpush "$dir"
+    ohai "$( join ' ' "${cmd[@]}" )"
+    try 'git log failed' "${cmd[@]}"
   dpop
 }                                                               # }}}1
 
