@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.status.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-12
+# Date        : 2012-08-25
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -31,7 +31,6 @@ function nap_cmd_run () {                                       # {{{1
   loadlib "type.$cfg_type"
 
   nap_type_status "${a:--n}"
-  [ -z "$a" ] && ohai '[done]'
   return 0
 }                                                               # }}}1
 

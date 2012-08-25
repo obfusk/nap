@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.info.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-24
+# Date        : 2012-08-25
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -25,13 +25,10 @@ function nap_cmd_run () {                                       # {{{1
   local q="$2"
   [ -z "$q" -o "$q" == -q ] || die "$nap_cmd_usage" usage
 
-  [ -z "$q" ] && ohai "[info] \`$cfg_name'"
-
   source "$nap_app_cfgfile" || odie '[loadcfg] failed'
   loadlib "type.$cfg_type"
 
   nap_showcfg $q
-  [ -z "$q" ] && ohai '[done]'
   return 0
 }                                                               # }}}1
 
