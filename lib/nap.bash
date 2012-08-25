@@ -4,7 +4,7 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-24
+# Date        : 2012-08-25
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -236,30 +236,31 @@ function nap_mkpid () { local f="$1" pid="$2"; echo "$pid" > "$f"; }
 
 # --
 
-# TODO {
-
-# Usage: nap_logs
-# Sets $nap_logs.
-function nap_logs () {                                          # {{{1
+# Usage: nap_find_logs
+# Sets $nap_logs to .../log/*.log.
+function nap_find_logs () {                                     # {{{1
   shopt -s nullglob
   nap_logs=( "$nap_app_log"/*.log )
   shopt -u nullglob
 }                                                               # }}}1
 
-function nap_log_list () {
+# Usage: nap_log_list
+# Outputs log names; /path/to/foo.log becomes foo.
+function nap_log_list () {                                      # {{{1
   local x
-  for x in "${nap_logs[@]}"; do echo "$( basename "$x" )"; done
-}
+  for x in "${nap_logs[@]}"; do echo "$( basename "$x" .log )"; done
+}                                                               # }}}1
 
-function nap_log_files () {
-  local x
-  for x in "${nap_logs[@]}"; do echo "$x"; done
-}
+# Usage: nap_log_files
+# Outputs log paths.
+function nap_log_files () {                                     # {{{1
+  local x; for x in "${nap_logs[@]}"; do echo "$x"; done
+}                                                               # }}}1
 
 # Usage: nap_log_tail <n> [<log(s)>]
-# ...
+# Uses tail to show specified log(s); no logs means all logs.
 function nap_log_tail () {                                      # {{{1
-  local n="$1" logs=() x cmd; shift
+  local n="$1" logs=() x; shift
 
   if [ "$#" -eq 0 ]; then
     logs=( "${nap_logs[@]}" )
@@ -273,15 +274,15 @@ function nap_log_tail () {                                      # {{{1
   done
 }                                                               # }}}1
 
-function nap_log_monitor () {
-  local n="$1" x="$2"
-  local f="$nap_app_log/$x".log
+# Usage: nap_log_monitor <n> <log>
+# Monitors /path/to/<log>.log using tail -f.
+function nap_log_monitor () {                                   # {{{1
+  local n="$1" l="$2"
+  local f="$nap_app_log/$l".log
 
   ohai "$f"
   tail -n "$n" -f -- "$f"
-}
-
-# } TODO
+}                                                               # }}}1
 
 # --
 
