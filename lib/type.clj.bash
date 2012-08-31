@@ -16,8 +16,8 @@
 # --
 
    nap_type_opts=( nginx server port cmd depcmd )
-   cfg_clj_cmd_d="${NAP_D_CLJ_CMD:-'lein run :prod'}"
-cfg_clj_depcmd_d="${NAP_D_CLJ_DEPCMD:-'lein deps'}"
+   cfg_clj_cmd_d="${NAP_D_CLJ_CMD:-lein run :prod}"
+cfg_clj_depcmd_d="${NAP_D_CLJ_DEPCMD:-lein deps}"
 
 loadlib 'helper.daemon'
 

@@ -4,14 +4,14 @@
 #
 # File        : lib/cmd.log.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-25
+# Date        : 2012-08-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
-nap_cmd_subs=( list files tail monitor hist )
+nap_cmd_subs=( list files assoc tail monitor hist )
 nap_cmd_subs_j="$( join ' | ' "${nap_cmd_subs[@]}" )"
 
 nap_cmd_usage_p='nap log <name>'
@@ -19,6 +19,7 @@ nap_cmd_usage="$nap_cmd_usage_p { $nap_cmd_subs_j } ..."
 
 nap_cmd_usage__list="$nap_cmd_usage_p list"                     # {{{1
 nap_cmd_usage__fils="$nap_cmd_usage_p files"
+nap_cmd_usage__assc="$nap_cmd_usage_p assoc"
 nap_cmd_usage__tail="$nap_cmd_usage_p tail <n> [<log(s)>]"
 nap_cmd_usage__moni="$nap_cmd_usage_p monitor <n> <log>"
 nap_cmd_usage__hist="$nap_cmd_usage_p hist <n> [-v]"            # }}}1
@@ -40,6 +41,10 @@ function nap_cmd_run_sub () {                                   # {{{1
     files)
       [ "$#" -eq 0 ] || die "$nap_cmd_usage__fils" usage
       nap_log_files
+    ;;
+    assoc)
+      [ "$#" -eq 0 ] || die "$nap_cmd_usage__assc" usage
+      nap_log_assoc
     ;;
     tail)
       [ "$#" -ge 1 ] || die "$nap_cmd_usage__tail" usage
@@ -87,6 +92,7 @@ function nap_cmd_help () {                                      # {{{1
   sed 's!^    !!g' <<__END
     Usage: $nap_cmd_usage__list
            $nap_cmd_usage__fils
+           $nap_cmd_usage__assc
            $nap_cmd_usage__tail
            $nap_cmd_usage__moni
            $nap_cmd_usage__hist

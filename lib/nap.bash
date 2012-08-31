@@ -4,7 +4,7 @@
 #
 # File        : lib/nap.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-25
+# Date        : 2012-08-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -19,7 +19,8 @@ export LC_COLLATE=C
                   start stop restart    \
                   status info log       )
                                                                 # TODO
-       nap_cfgs=( type repo vcs branch )
+       nap_cfgs=( type repo vcs branch logdir )
+       nap_opts='vcs|branch|logdir'
 
     nap_logfile="$NAP_LOG_DIR/nap.log"
    nap_logfiles=( "$nap_logfile" )
@@ -32,12 +33,14 @@ nap_app_cfgfile=
 nap_app_pidfile=
 
        nap_logs=()
+    nap_applogs=()
 
        cfg_name=
        cfg_type=
        cfg_repo=
         cfg_vcs=git
      cfg_branch=
+     cfg_logdir=
                                                                 # }}}1
 
 # --
@@ -237,24 +240,45 @@ function nap_mkpid () { local f="$1" pid="$2"; echo "$pid" > "$f"; }
 # --
 
 # Usage: nap_find_logs
-# Sets $nap_logs to .../log/*.log.
+# Sets $nap_{app,}logs to .../log/*.log.
 function nap_find_logs () {                                     # {{{1
   shopt -s nullglob
   nap_logs=( "$nap_app_log"/*.log )
+  [ -n "$cfg_logdir" ] \
+    && nap_applogs=( "$nap_app_app/$cfg_logdir"/*.log )
   shopt -u nullglob
 }                                                               # }}}1
 
 # Usage: nap_log_list
-# Outputs log names; /path/to/foo.log becomes foo.
+# Outputs log names; /path/to/foo.log becomes foo; app log becomes
+# @foo.
 function nap_log_list () {                                      # {{{1
   local x
-  for x in "${nap_logs[@]}"; do echo "$( basename "$x" .log )"; done
+  for x in "${nap_logs[@]}"; do
+    echo "$( basename "$x" .log )"
+  done
+  for x in "${nap_applogs[@]}"; do
+    echo "@$( basename "$x" .log )"
+  done
 }                                                               # }}}1
 
 # Usage: nap_log_files
 # Outputs log paths.
 function nap_log_files () {                                     # {{{1
-  local x; for x in "${nap_logs[@]}"; do echo "$x"; done
+  local x
+  for x in "${nap_logs[@]}" "${nap_applogs[@]}"; do echo "$x"; done
+}                                                               # }}}1
+
+# Usage: nap_log_assoc
+# Outputs log names and files.
+function nap_log_assoc () {                                     # {{{1
+  local x
+  for x in "${nap_logs[@]}"; do
+    printf '%-19s %s\n' "$( basename "$x" .log )" "$x"
+  done
+  for x in "${nap_applogs[@]}"; do
+    printf '%-19s %s\n' "@$( basename "$x" .log )" "$x"
+  done
 }                                                               # }}}1
 
 # Usage: nap_log_tail <n> [<log(s)>]
@@ -263,9 +287,16 @@ function nap_log_tail () {                                      # {{{1
   local n="$1" logs=() x; shift
 
   if [ "$#" -eq 0 ]; then
-    logs=( "${nap_logs[@]}" )
+    logs=( "${nap_logs[@]}" "${nap_applogs[@]}" )
   else
-    for x in "$@"; do logs+=( "$nap_app_log/$x".log ); done
+    for x in "$@"; do
+      if [[ "$x" == @* ]]; then
+        [ -z "$cfg_logdir" ] && odie 'logdir not set'
+        logs+=( "$nap_app_app/$cfg_logdir/${x:1}".log )
+      else
+        logs+=( "$nap_app_log/$x".log )
+      fi
+    done
   fi
 
   for x in "${logs[@]}"; do
@@ -277,8 +308,14 @@ function nap_log_tail () {                                      # {{{1
 # Usage: nap_log_monitor <n> <log>
 # Monitors /path/to/<log>.log using tail -f.
 function nap_log_monitor () {                                   # {{{1
-  local n="$1" l="$2"
-  local f="$nap_app_log/$l".log
+  local n="$1" l="$2" f
+
+  if [[ "$l" == @* ]]; then
+    [ -z "$cfg_logdir" ] && odie 'logdir not set'
+    f="$nap_app_app/$cfg_logdir/${l:1}".log
+  else
+    f="$nap_app_log/$l".log
+  fi
 
   ohai "$f"
   tail -n "$n" -f -- "$f"

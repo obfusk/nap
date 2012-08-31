@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.new.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-18
+# Date        : 2012-08-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -28,7 +28,7 @@ function nap_cmd_run_prepare () {                               # {{{1
 
   loadlib "type.$cfg_type"
 
-  local opts='vcs|branch'
+  local opts="$nap_opts"
   if [ "${#nap_type_opts[@]}" -gt 0 ]; then
     opts+="|$cfg_type\.($( join '|' "${nap_type_opts[@]}" ))"
   fi
@@ -37,6 +37,7 @@ function nap_cmd_run_prepare () {                               # {{{1
 
   validate "$cfg_vcs"     "$chk_word"     'invalid vcs'
   validate "$cfg_branch"  "()|$chk_word"  'invalid branch'
+  # no validation for logdir (!?)
 
   nap_type_validate_opts
 
