@@ -4,31 +4,27 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-24
+# Date        : 2012-08-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
-# TODO {
-#
-#   * lein zombies !!!
-#   * lein deps alternative ???
-#
-# } TODO
+# TODO: lein zombies !!!
 
 # --
 
-nap_type_opts=( nginx server port cmd )
-cfg_clj_cmd_d='lein run :prod'
+   nap_type_opts=( nginx server port cmd depcmd )
+   cfg_clj_cmd_d="${NAP_D_CLJ_CMD:-'lein run :prod'}"
+cfg_clj_depcmd_d="${NAP_D_CLJ_DEPCMD:-'lein deps'}"
 
 loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_clj_*; sets default cfg_clj_cmd.
+# Validates cfg_clj_*; sets default cfg_clj_{,dep}cmd.
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_clj_nginx" '()|port'   'invalid clj.nginx'
   validate "$cfg_clj_port"  "$chk_num"  'invalid clj.port'
@@ -40,14 +36,15 @@ function nap_type_validate_opts () {                            # {{{1
       || fail 'invalid: clj.server w/o clj.nginx'
   fi
 
-  # don't validate $cfg_clj_cmd -- is command line
+  # don't validate $cfg_clj_{,dep}cmd -- is command line
   : ${cfg_clj_cmd:="$cfg_clj_cmd_d"}
+  : ${cfg_clj_depcmd:="$cfg_clj_depcmd_d"}
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
 # Installs dependencies; dies on failure.
 function nap_type_install_deps () {                             # {{{1
-  nap_helper_daemon_deps 'lein deps' lein deps
+  nap_helper_daemon_deps "$cfg_clj_depcmd" $cfg_clj_depcmd
 }                                                               # }}}1
 
 # Usage: nap_type_bootstrap

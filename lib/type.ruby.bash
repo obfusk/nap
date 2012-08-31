@@ -4,30 +4,25 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-24
+# Date        : 2012-08-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
-# TODO {
-#
-#   * bundle install alternative ???
-#
-# } TODO
-
 # --
 
-nap_type_opts=( nginx server port cmd )
-cfg_ruby_cmd_d='unicorn -E production ${LISTEN}'
+    nap_type_opts=( nginx server port cmd depcmd )
+   cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-'unicorn -E production ${LISTEN}'}"
+cfg_ruby_depcmd_d="${NAP_D_RUBY_DEPCMD:-'bundle install'}"
 
 loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_ruby_*; sets default cfg_ruby_cmd.
+# Validates cfg_ruby_*; sets default cfg_ruby_{,dep}cmd.
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_ruby_nginx" '()|port|sock' 'invalid ruby.nginx'
 
@@ -45,14 +40,15 @@ function nap_type_validate_opts () {                            # {{{1
     validate "$cfg_ruby_port" "$chk_num" 'invalid ruby.port'
   fi
 
-  # don't validate $cfg_ruby_cmd -- is command line
+  # don't validate $cfg_ruby_{,dep}cmd -- is command line
   : ${cfg_ruby_cmd:="$cfg_ruby_cmd_d"}
+  : ${cfg_ruby_depcmd:="$cfg_ruby_depcmd_d"}
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
 # Installs dependencies; dies on failure.
 function nap_type_install_deps () {                             # {{{1
-  nap_helper_daemon_deps 'bundle install' bundle install
+  nap_helper_daemon_deps "$cfg_ruby_depcmd" $cfg_ruby_depcmd
 }                                                               # }}}1
 
 # Usage: nap_type_bootstrap
