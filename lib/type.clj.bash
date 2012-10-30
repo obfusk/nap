@@ -4,19 +4,17 @@
 #
 # File        : lib/type.clj.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-31
+# Date        : 2012-10-30
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
 
-# TODO: lein zombies !!!
-
 # --
 
    nap_type_opts=( nginx server port cmd depcmd )
-   cfg_clj_cmd_d="${NAP_D_CLJ_CMD:-lein run :prod}"
+   cfg_clj_cmd_d="${NAP_D_CLJ_CMD:-lein trampoline run :prod}"
 cfg_clj_depcmd_d="${NAP_D_CLJ_DEPCMD:-lein deps}"
 
 loadlib 'helper.daemon'

@@ -19,6 +19,7 @@ NAP_APPS_DIR=/__nap/apps
 
    NAP_D_RUBY_CMD=
 NAP_D_RUBY_DEPCMD=
+NAP_D_RUBY_SIGNAL=
 
 
 # --

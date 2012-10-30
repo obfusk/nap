@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-24
+# Date        : 2012-10-30
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -208,10 +208,10 @@ function nap_helper_daemon_start () {                           # {{{1
   fi
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_stop <info>
+# Usage: nap_helper_daemon_stop <info> [<signal>]
 # Stops daemon (if running) by killing pid; dies on failure.
 function nap_helper_daemon_stop () {                            # {{{1
-  local info="$1"
+  local info="$1" signal="$2"
   local name="${info%% *}"
   local status="$( nap_helper_daemon_status "$name" )"
 
@@ -219,7 +219,8 @@ function nap_helper_daemon_stop () {                            # {{{1
     opoo "$name is $status"
   else
     ohai "[kill] $name"
-    try '[kill] failed' kill "$status"    # $status is pid if running
+    try '[kill] failed' kill -s "${signal:-SIGTERM}" "$status"
+                                          # $status is pid if running
     try '[rmpid] failed' rm "$nap_app_pidfile"
   fi
 }                                                               # }}}1

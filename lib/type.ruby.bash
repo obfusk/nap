@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-31
+# Date        : 2012-10-30
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -13,16 +13,17 @@
 
 # --
 
-    nap_type_opts=( nginx server port cmd depcmd )
+    nap_type_opts=( nginx server port cmd depcmd signal )
    cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"unicorn -E production \${LISTEN}"}"
 cfg_ruby_depcmd_d="${NAP_D_RUBY_DEPCMD:-bundle install}"
+cfg_ruby_signal_d="${NAP_D_RUBY_SIGNAL:-SIGTERM}"
 
 loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_ruby_*; sets default cfg_ruby_{,dep}cmd.
+# Validates cfg_ruby_*; sets default cfg_ruby_{{,dep}cmd,signal}.
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_ruby_nginx" '()|port|sock' 'invalid ruby.nginx'
 
@@ -43,6 +44,10 @@ function nap_type_validate_opts () {                            # {{{1
   # don't validate $cfg_ruby_{,dep}cmd -- is command line
   : ${cfg_ruby_cmd:="$cfg_ruby_cmd_d"}
   : ${cfg_ruby_depcmd:="$cfg_ruby_depcmd_d"}
+
+  : ${cfg_ruby_signal:="$cfg_ruby_signal_d"}
+
+  validate "$cfg_ruby_signal" "()|SIG(TERM|INT)" 'invalid ruby.signal'
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
@@ -110,7 +115,7 @@ function nap_type_start () {                                    # {{{1
 # Usage: nap_type_stop
 # Stops daemon; dies on failure.
 function nap_type_stop () {                                     # {{{1
-  nap_helper_daemon_stop "$cfg_ruby_cmd"
+  nap_helper_daemon_stop "$cfg_ruby_cmd" "$cfg_ruby_signal"
 }                                                               # }}}1
 
 # Usage: nap_type_restart
