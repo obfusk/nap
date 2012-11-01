@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo 'Usage: set-vsn <vsn>' >&2
+  exit 1
+fi
+
+if [ "$( uname )" == Darwin ]; then
+  sed='sed -E'
+else
+  sed='sed -r'
+fi
+
+# --
+
+vsn="$1"
+
+if [[ "$vsn" == *-NOW ]]; then
+  vsn="${vsn%-NOW}-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)"
+fi
+
+# --
+
+echo 'README ...'
+$sed -i\~ 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' README
+
+echo 'bin/nap ...'
+$sed -i\~ 's!(^ *vsn='\'')(.*)('\'')( *)$!\1'"$vsn"'\3!' bin/nap
+
+echo 'doc/type-clj ...'
+$sed -i\~ 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' doc/type-clj
+
+echo 'doc/type-ruby ...'
+$sed -i\~ 's!(^Version *: *v)(.*)$!\1'"$vsn"'!' doc/type-ruby
+
+# TODO: doc/website.md
+
+# --
