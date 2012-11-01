@@ -11,7 +11,7 @@
 #
 # --                                                            # }}}1
 
-  vsn='0.0.0'
+  vsn='0.1.0'
 usage='nap { <command> [<arg(s)>] | help [<command>] }'
 
 # --
