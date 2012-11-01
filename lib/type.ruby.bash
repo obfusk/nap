@@ -13,8 +13,8 @@
 
 # --
 
- nap_type_opts=( nginx server port cmd depcmd )
-cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"unicorn -E production \${LISTEN}"}"
+    nap_type_opts=( nginx server port cmd depcmd )
+   cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"SIGINT bundle exec rackup -E production \${LISTEN}"}"
 cfg_ruby_depcmd_d="${NAP_D_RUBY_DEPCMD:-bundle install}"
 
 loadlib 'helper.daemon'

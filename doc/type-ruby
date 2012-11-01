@@ -37,7 +37,13 @@ Version     : v0.1.0
 
     ruby.cmd
       Optional.  The command used to start the server.  The default is
-      'unicorn -E production ${LISTEN}' (unless modified in naprc).
+      'SIGINT bundle exec rackup -E production ${LISTEN}' (unless
+      modified in naprc; and yes, rackup is being silly and needs to
+      be stopped with a SIGINT).
+
+      You may want to (modify naprc and) change this to something like
+      'bundle exec unicorn -E production ${LISTEN}' (for unicorn), or
+      simply remove '-E production' (for development).
 
       All occurences of '${LISTEN}' are replaced by either '-p $PORT'
       or '-l $SOCKET'.
