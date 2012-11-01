@@ -239,10 +239,10 @@ function nap_helper_daemon_parse_cmd () {                       # {{{1
     s=SIGTERM c="$cmd"
   fi
 
-  if [ -n "$nap_helper_daemon_signal" ] && \
-     [ "$nap_helper_daemon_signal" != "$s" ]; then
-    odie 'oops! signal has changed between calls to ..._parse_cmd'
-  fi
+  # if [ -n "$nap_helper_daemon_signal" ] && \
+  #    [ "$nap_helper_daemon_signal" != "$s" ]; then
+  #   odie 'oops! signal has changed between calls to ..._parse_cmd'
+  # fi
 
   nap_helper_daemon_signal="$s"
   echo "$c"

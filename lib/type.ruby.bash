@@ -21,6 +21,13 @@ loadlib 'helper.daemon'
 
 # --
 
+if [ -n "$cfg_ruby_cmd" ]; then
+  # should only be skipped for cmd.new, which is OK
+  cfg_ruby_cmd_="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+fi
+
+# --
+
 # Usage: nap_type_validate_opts
 # Validates cfg_ruby_*; sets default cfg_ruby_{,dep}cmd.
 function nap_type_validate_opts () {                            # {{{1
@@ -67,11 +74,9 @@ function nap_type_bootstrap () {                                # {{{1
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
-  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
-
   if [[ "$cfg_ruby_nginx" =~ ^(port|sock)$ ]]; then
     ohai 'Caveats'
-    nap_helper_nginx_info "ruby ($cmd)" \
+    nap_helper_nginx_info "ruby ($cfg_ruby_cmd_)" \
       "$nap_helper_daemon_nginx_conf"
   fi
 }                                                               # }}}1
@@ -81,42 +86,38 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Usage: nap_type_status -[nqs]
 # Outputs daemon status.
 function nap_type_status () {                                   # {{{1
-  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
-  nap_helper_daemon_status_info "${cmd%% *}" "$1"
+  nap_helper_daemon_status_info "${cfg_ruby_cmd_%% *}" "$1"
 }                                                               # }}}1
 
 # Usage: nap_type_running [warn]
 # Returns non-zero if not running; warns if dead when warn is passed.
 function nap_type_running () {                                  # {{{1
-  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
-  nap_helper_daemon_running "${cmd%% *}" ${1:+"$1"}
+  nap_helper_daemon_running "${cfg_ruby_cmd_%% *}" ${1:+"$1"}
 }                                                               # }}}1
 
 # Usage: nap_type_start
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
-  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
-  local cmd_= sock= port=
+  local cmd= sock= port=
 
   if [ "$cfg_ruby_nginx" == sock ]; then
     sock="$nap_app_run/daemon.sock"
-    cmd_="${cmd//\${LISTEN\}/-l $sock}"
+    cmd="${cfg_ruby_cmd_//\${LISTEN\}/-l $sock}"
     ohai "SOCKET=$sock"
   else
     port="$cfg_ruby_port"
-    cmd_="${cmd//\${LISTEN\}/-p $port}"
+    cmd="${cfg_ruby_cmd_//\${LISTEN\}/-p $port}"
     ohai "PORT=$port"
   fi
 
-  # don't quote $cmd_ -- is command line
-  PORT="$port" SOCKET="$sock" nap_helper_daemon_start 7 nohup $cmd_
+  # don't quote cmd -- is command line
+  PORT="$port" SOCKET="$sock" nap_helper_daemon_start 7 nohup $cmd
 }                                                               # }}}1
 
 # Usage: nap_type_stop
 # Stops daemon; dies on failure.
 function nap_type_stop () {                                     # {{{1
-  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
-  nap_helper_daemon_stop "$cmd"
+  nap_helper_daemon_stop "$cfg_ruby_cmd_"
 }                                                               # }}}1
 
 # Usage: nap_type_restart
