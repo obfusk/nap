@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-10-30
+# Date        : 2012-11-01
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -208,21 +208,44 @@ function nap_helper_daemon_start () {                           # {{{1
   fi
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_stop <info> [<signal>]
-# Stops daemon (if running) by killing pid; dies on failure.
+# Usage: nap_helper_daemon_stop <info>
+# Stops daemon (if running) by killing pid; dies on failure; uses
+# $nap_helper_daemon_signal set by nap_helper_daemon_parse_cmd.
 function nap_helper_daemon_stop () {                            # {{{1
-  local info="$1" signal="$2"
-  local name="${info%% *}"
+  local info="$1"
+  local name="${info%% *}" sig="$nap_helper_daemon_signal"
   local status="$( nap_helper_daemon_status "$name" )"
 
   if [ "$status" == stopped -o "$status" == dead ]; then
     opoo "$name is $status"
-  else
-    ohai "[kill] $name"
-    try '[kill] failed' kill -s "${signal:-SIGTERM}" "$status"
-                                          # $status is pid if running
+  else # running; $status is pid
+    ohai "[kill ($sig)] $name"
+    try '[kill] failed' kill -s "$sig" "$status"
     try '[rmpid] failed' rm "$nap_app_pidfile"
   fi
+}                                                               # }}}1
+
+# --
+
+# Usage: nap_helper_daemon_parse_cmd <cmd>
+# Parses optional SIG* prefix; (e.g. "SIGINT cmd ..."); sets
+# nap_helper_daemon_signal; outputs command w/o signal.
+function nap_helper_daemon_parse_cmd () {                       # {{{1
+  local cmd="$1" c s
+
+  if [[ "$cmd" =~ ^SIG[A-Z0-9]+' ' ]]; then
+    s="${cmd%% *}" c="${cmd#* }"
+  else
+    s=SIGTERM c="$cmd"
+  fi
+
+  if [ -n "$nap_helper_daemon_signal" ] && \
+     [ "$nap_helper_daemon_signal" != "$s" ]; then
+    odie 'oops! signal has changed between calls to ..._parse_cmd'
+  fi
+
+  nap_helper_daemon_signal="$s"
+  echo "$c"
 }                                                               # }}}1
 
 # --

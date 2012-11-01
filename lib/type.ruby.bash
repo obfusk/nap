@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-10-30
+# Date        : 2012-11-01
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -13,17 +13,16 @@
 
 # --
 
-    nap_type_opts=( nginx server port cmd depcmd signal )
-   cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"unicorn -E production \${LISTEN}"}"
+ nap_type_opts=( nginx server port cmd depcmd )
+cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"unicorn -E production \${LISTEN}"}"
 cfg_ruby_depcmd_d="${NAP_D_RUBY_DEPCMD:-bundle install}"
-cfg_ruby_signal_d="${NAP_D_RUBY_SIGNAL:-SIGTERM}"
 
 loadlib 'helper.daemon'
 
 # --
 
 # Usage: nap_type_validate_opts
-# Validates cfg_ruby_*; sets default cfg_ruby_{{,dep}cmd,signal}.
+# Validates cfg_ruby_*; sets default cfg_ruby_{,dep}cmd.
 function nap_type_validate_opts () {                            # {{{1
   validate "$cfg_ruby_nginx" '()|port|sock' 'invalid ruby.nginx'
 
@@ -44,10 +43,6 @@ function nap_type_validate_opts () {                            # {{{1
   # don't validate $cfg_ruby_{,dep}cmd -- is command line
   : ${cfg_ruby_cmd:="$cfg_ruby_cmd_d"}
   : ${cfg_ruby_depcmd:="$cfg_ruby_depcmd_d"}
-
-  : ${cfg_ruby_signal:="$cfg_ruby_signal_d"}
-
-  validate "$cfg_ruby_signal" "()|SIG(TERM|INT)" 'invalid ruby.signal'
 }                                                               # }}}1
 
 # Usage: nap_type_install_deps
@@ -72,9 +67,11 @@ function nap_type_bootstrap () {                                # {{{1
 # Usage: nap_type_bootstrap_info
 # Outputs info.
 function nap_type_bootstrap_info () {                           # {{{1
+  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+
   if [[ "$cfg_ruby_nginx" =~ ^(port|sock)$ ]]; then
     ohai 'Caveats'
-    nap_helper_nginx_info "ruby ($cfg_ruby_cmd)" \
+    nap_helper_nginx_info "ruby ($cmd)" \
       "$nap_helper_daemon_nginx_conf"
   fi
 }                                                               # }}}1
@@ -84,38 +81,42 @@ function nap_type_bootstrap_info () {                           # {{{1
 # Usage: nap_type_status -[nqs]
 # Outputs daemon status.
 function nap_type_status () {                                   # {{{1
-  nap_helper_daemon_status_info "${cfg_ruby_cmd%% *}" "$1"
+  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+  nap_helper_daemon_status_info "${cmd%% *}" "$1"
 }                                                               # }}}1
 
 # Usage: nap_type_running [warn]
 # Returns non-zero if not running; warns if dead when warn is passed.
 function nap_type_running () {                                  # {{{1
-  nap_helper_daemon_running "${cfg_ruby_cmd%% *}" ${1:+"$1"}
+  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+  nap_helper_daemon_running "${cmd%% *}" ${1:+"$1"}
 }                                                               # }}}1
 
 # Usage: nap_type_start
 # Starts daemon; dies on failure.
 function nap_type_start () {                                    # {{{1
-  local cmd= sock= port=
+  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+  local cmd_= sock= port=
 
   if [ "$cfg_ruby_nginx" == sock ]; then
     sock="$nap_app_run/daemon.sock"
-    cmd="${cfg_ruby_cmd//\${LISTEN\}/-l $sock}"
+    cmd_="${cmd//\${LISTEN\}/-l $sock}"
     ohai "SOCKET=$sock"
   else
     port="$cfg_ruby_port"
-    cmd="${cfg_ruby_cmd//\${LISTEN\}/-p $port}"
+    cmd_="${cmd//\${LISTEN\}/-p $port}"
     ohai "PORT=$port"
   fi
 
-  # don't quote $cmd -- is command line
-  PORT="$port" SOCKET="$sock" nap_helper_daemon_start 7 nohup $cmd
+  # don't quote $cmd_ -- is command line
+  PORT="$port" SOCKET="$sock" nap_helper_daemon_start 7 nohup $cmd_
 }                                                               # }}}1
 
 # Usage: nap_type_stop
 # Stops daemon; dies on failure.
 function nap_type_stop () {                                     # {{{1
-  nap_helper_daemon_stop "$cfg_ruby_cmd" "$cfg_ruby_signal"
+  local cmd="$( nap_helper_daemon_parse_cmd "$cfg_ruby_cmd" )"
+  nap_helper_daemon_stop "$cmd"
 }                                                               # }}}1
 
 # Usage: nap_type_restart
