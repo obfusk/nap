@@ -229,7 +229,7 @@ function nap_helper_daemon_stop () {                            # {{{1
 
 # Usage: nap_helper_daemon_parse_cmd <cmd>
 # Parses optional SIG* prefix; (e.g. "SIGINT cmd ..."); sets
-# nap_helper_daemon_signal; outputs command w/o signal.
+# nap_helper_daemon_{signal,cmd}.
 function nap_helper_daemon_parse_cmd () {                       # {{{1
   local cmd="$1" c s
 
@@ -244,8 +244,7 @@ function nap_helper_daemon_parse_cmd () {                       # {{{1
   #   odie 'oops! signal has changed between calls to ..._parse_cmd'
   # fi
 
-  nap_helper_daemon_signal="$s"
-  echo "$c"
+  nap_helper_daemon_signal="$s" nap_helper_daemon_cmd="$c"
 }                                                               # }}}1
 
 # --

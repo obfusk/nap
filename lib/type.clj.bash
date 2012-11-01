@@ -23,7 +23,8 @@ loadlib 'helper.daemon'
 
 if [ -n "$cfg_clj_cmd" ]; then
   # should only be skipped for cmd.new, which is OK
-  cfg_clj_cmd_="$( nap_helper_daemon_parse_cmd "$cfg_clj_cmd" )"
+  nap_helper_daemon_parse_cmd "$cfg_clj_cmd"
+  cfg_clj_cmd_="$nap_helper_daemon_cmd"
 fi
 
 # --
