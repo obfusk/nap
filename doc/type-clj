@@ -2,7 +2,7 @@
 
 File        : type-clj
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-17
+Date        : 2012-11-01
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.1.0
@@ -16,8 +16,6 @@ Version     : v0.1.0
 
   The template is found in >> lib/type.clj.bash <<.  Feel free to
   fork, improve etc.
-
-  The command used to install dependencies is >> lein deps <<.
 
 
   === Options ===                                                 {{{2
@@ -37,10 +35,27 @@ Version     : v0.1.0
 
     clj.cmd
       Optional.  The command used to start the server.  The default is
-      'lein run :prod'.
+      'lein trampoline run :prod' (unless modified in naprc).
 
-      For a more advanced configuration, you can use e.g. 'foreman
-      start' with a Procfile; PORT is available as an envvar.
+      For a more advanced configuration, you can use a custom script
+      (e.g. './_scripts/run-prod'); PORT is available as an envvar.
+
+      Do not use foreman, it doesn't respond properly to signals and
+      nap is unable to stop it.
+
+      If you need to send the daemon a signal other than SIGTERM to
+      stop it, you can prefix the command with the signal to be used
+      (e.g. 'SIGINT cmd ...').
+
+    clj.depcmd
+      Optional.  The command used to install/update (dependencies).
+      The default is 'lein deps' (unless modified in naprc); you
+      should (modify naprc and) change this to 'lein compile :all'
+      when using leiningen 2.x.
+
+      For a more advanced configuration, you can use a custom script
+      (like with clj.cmd); this can also be used to perform additional
+      actions on update.
                                                                   }}}2
                                                                   }}}1
 

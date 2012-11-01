@@ -2,7 +2,7 @@
 
 File        : README
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-17
+Date        : 2012-11-01
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.1.0
@@ -11,9 +11,11 @@ Version     : v0.1.0
 
 === NB ===                                                        {{{1
 
-  Nap is still a work in progress.  It should be usable, but it's
-  still evolving and changing in backwards-incompatible ways.  Hence
-  v0.0.0.                                                         TODO
+  Nap is still in beta (< v1.0.0), not fully tested and I can't make
+  any guarantees regarding backward-compatibility.  It seems to work
+  well enough (we use it in production at the company I work at), and
+  I don't intend to break compatibility unless there's a compelling
+  reason to do so.  Have fun.
                                                                   }}}1
 
 === Description ===                                               {{{1
@@ -27,7 +29,7 @@ Version     : v0.1.0
     * Get a quick overview of running apps.
     * Update an app in seconds with a single command.
     * Allow developers to have their apps updated automatically when
-      they push their code to the server.
+      they push their code to the server (using git).
                                                                   }}}1
 
 === Usage ===                                                     {{{1
@@ -46,6 +48,8 @@ Version     : v0.1.0
     nap stop      <name>
     nap restart   <name>
     nap status    <name> [ -q | -s ]
+    nap info      <name> [ -q ]
+    nap log       <name> <subcommand> ...
 
 
     === Commands ===                                              {{{3
@@ -54,6 +58,7 @@ Version     : v0.1.0
                   Options:
                     vcs=...                 default is git
                     branch=...              default is master
+                    logdir=...              default is no logdir
                     <type>.<option>=...
 
       bootstrap   Installs dependencies.
@@ -63,6 +68,26 @@ Version     : v0.1.0
       stop        Stops.
       restart     Restarts (if running).
       status      Shows status.
+      info        Shows configuration.
+                                                                  }}}3
+
+    === Log commands ===                                          {{{3
+
+      These allow you to list and view nap's logfiles.  If you've
+      specified a logdir (relative to your app), <logdir>/*.log can
+      also be referenced (with a prefix); e.g. <logdir>/foo.log is
+      referenced as @foo.
+
+      list                  lists names of logfiles
+      files                 lists paths of logfiles
+      assoc                 lists names and paths of logfiles
+      tail <n> [<log(s)>]   shows the last <n> lines of the specified
+                            logfiles (or all logfiles if none are
+                            specified)
+      monitor <n> <log>     shows the last <n> lines of the specified
+                            logfile; shows appended data as the file
+                            grows
+      hist <n> [-v]         shows the last <n> commits
                                                                   }}}3
                                                                   }}}2
 
@@ -73,6 +98,7 @@ Version     : v0.1.0
     naps
     naps list
     naps { update | start | stop | restart | status } [<app(s)>]
+    naps pstart [<app(s)>]
 
 
     === Commands ===                                              {{{3
@@ -83,6 +109,9 @@ Version     : v0.1.0
       naps { update | start | stop | restart | status }
                     Runs >> nap <command> <app> << for all apps
                     specified (or all apps if none are specified).
+
+      naps pstart   Same as >> naps start <<, but starts apps in
+                    parallel; output looks funny.
                                                                   }}}3
                                                                   }}}2
                                                                   }}}1
@@ -92,11 +121,14 @@ Version     : v0.1.0
   Get it at https://github.com/obfusk/nap.
 
   See doc/my-server for an example server setup.
+
+  You may also be interested in the web-based "naps" command:
+  https://github.com/obfusk/nap-app.
                                                                   }}}1
 
 === Depends ===                                                   {{{1
 
-  * unix (tested on linux and osx)
+  * unix (tested on ubuntu; partially tested on osx)
   * bash
   * git
 
@@ -108,9 +140,8 @@ Version     : v0.1.0
 
 === TODO ===                                                      {{{1
 
-  * test server(s) (almost done)
-  * fix small things
-  * keep documentation up to date w/ improvements
+  * update docs
+  * clj SOCKET ???
 
   ...
                                                                   }}}1

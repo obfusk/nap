@@ -2,7 +2,7 @@
 
 File        : doc/my-server
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-17
+Date        : 2012-11-01
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 
@@ -28,9 +28,6 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
                                                                   }}}1
 
 === Configuration ===                                             {{{1
-
-  ... TODO ...
-
 
   === w/ sudo ===                                                 {{{2
 
@@ -70,6 +67,10 @@ Copyright   : Copyright (C) 2012  Felix C. Stegerman
         # Cmnd_Alias NAPUPDATE = /__nap/nap/bin/nap-update
         # Defaults!NAPUPDATE always_set_home
         # git ALL = (nap) NOPASSWD: NAPUPDATE
+
+      $ cp -i /__nap/nap/etc/nap.init.sample /etc/init.d/nap
+      $ chmod +x /etc/init.d/nap
+      $ update-rc.d nap defaults
 
       See nap/nap.
                                                                   }}}3

@@ -2,7 +2,7 @@
 
 File        : type-ruby
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-08-17
+Date        : 2012-11-01
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.1.0
@@ -16,8 +16,6 @@ Version     : v0.1.0
 
   The template is found in >> lib/type.ruby.bash <<.  Feel free to
   fork, improve etc.
-
-  The command used to install dependencies is >> bundle install <<.
 
 
   === Options ===                                                 {{{2
@@ -39,11 +37,29 @@ Version     : v0.1.0
 
     ruby.cmd
       Optional.  The command used to start the server.  The default is
-      'unicorn -E production ${LISTEN}'.  All occurences of
-      '${LISTEN}' are replaced by either '-p $PORT' or '-l $SOCKET'.
+      'unicorn -E production ${LISTEN}' (unless modified in naprc).
 
-      For a more advanced configuration, you can use e.g. 'foreman
-      start' with a Procfile; PORT/SOCKET are available as envvars.
+      All occurences of '${LISTEN}' are replaced by either '-p $PORT'
+      or '-l $SOCKET'.
+
+      For a more advanced configuration, you can use a custom script
+      (e.g. './_scripts/run-prod'); PORT/SOCKET are available as
+      envvars.
+
+      Do not use foreman, it doesn't respond properly to signals and
+      nap is unable to stop it.
+
+      If you need to send the daemon a signal other than SIGTERM to
+      stop it, you can prefix the command with the signal to be used
+      (e.g. 'SIGINT cmd ...').
+
+    ruby.depcmd
+      Optional.  The command used to install/update (dependencies).
+      The default is 'bundle install' (unless modified in naprc).
+
+      For a more advanced configuration, you can use a custom script
+      (like with ruby.cmd); this can also be used to perform
+      additional actions on update (e.g. precomiling assets).
                                                                   }}}2
                                                                   }}}1
 
