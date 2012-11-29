@@ -69,7 +69,8 @@ Version     : v0.1.0
 
       For a more advanced configuration, you can use a custom script
       (like with ruby.cmd); this can also be used to perform
-      additional actions on update (e.g. precomiling assets).
+      additional actions on update (e.g. precompiling assets).  See
+      etc/rails-update-script.sample for a rails example.
                                                                   }}}2
                                                                   }}}1
 

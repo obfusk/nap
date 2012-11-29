@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export RAILS_ENV=production
+
+cmds=(
+  'bundle install'
+  'bundle exec rake db:migrate'
+  'bundle exec rake assets:precompile'
+)
+
+# --
+
+for cmd in "${cmds[@]}"; do
+  echo "==> $cmd"
+  time $cmd
+done
+
+# --
