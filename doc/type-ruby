@@ -2,7 +2,7 @@
 
 File        : type-ruby
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-11-01
+Date        : 2012-11-29
 
 Copyright   : Copyright (C) 2012  Felix C. Stegerman
 Version     : v0.1.0
@@ -34,6 +34,10 @@ Version     : v0.1.0
     ruby.port
       The port the server listens on.  You must set this unless you
       use ruby.nginx=sock.
+
+    ruby.public
+      Optional.  The subpath for static files; e.g. public.  Requires
+      ruby.nginx.
 
     ruby.cmd
       Optional.  The command used to start the server.  The default is

@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.nginx.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-17
+# Date        : 2012-11-29
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -21,9 +21,10 @@ fi
 
 # Usage: nap_helper_nginx_port_mkcfg <file>
 # Writes config file; returns non-zero on failure.
-# Uses $cfg_nginx_{server,log,host,port}.
+# Uses $cfg_nginx_{server,log,host,port,public}.
 function nap_helper_nginx_port_mkcfg () {                       # {{{1
-  local f="$1"
+  local f="$1" loc=
+  if [ -n "$cfg_nginx_public" ]; then loc=@app; else loc=/; fi
   sed 's!^    !!g' <<__END > "$f"
     server {
       listen      80;
@@ -32,7 +33,14 @@ function nap_helper_nginx_port_mkcfg () {                       # {{{1
       access_log  $cfg_nginx_log/nginx-access.log;
       error_log   $cfg_nginx_log/nginx-error.log;
 
-      location / {
+$(if [ -n "$cfg_nginx_public" ]; then
+    cat <<____END2
+      root        $cfg_nginx_public;
+      try_files   \$uri/index.html \$uri.html \$uri @app;
+____END2
+  fi)
+
+      location $loc {
         proxy_pass http://$cfg_nginx_host:$cfg_nginx_port;
       }
     }
@@ -41,9 +49,10 @@ __END
 
 # Usage: nap_helper_nginx_sock_mkcfg <file>
 # Writes config file; returns non-zero on failure.
-# Uses $cfg_nginx_{server,log,sock}, $cfg_name.
+# Uses $cfg_nginx_{server,log,sock,public}, $cfg_name.
 function nap_helper_nginx_sock_mkcfg () {                       # {{{1
-  local f="$1"
+  local f="$1" loc=
+  if [ -n "$cfg_nginx_public" ]; then loc=@app; else loc=/; fi
   sed 's!^    !!g' <<__END > "$f"
     upstream __${cfg_name}_server__ {
       server unix:$cfg_nginx_sock fail_timeout=0;
@@ -56,7 +65,14 @@ function nap_helper_nginx_sock_mkcfg () {                       # {{{1
       access_log  $cfg_nginx_log/nginx-access.log;
       error_log   $cfg_nginx_log/nginx-error.log;
 
-      location / {
+$(if [ -n "$cfg_nginx_public" ]; then
+    cat <<____END2
+      root        $cfg_nginx_public;
+      try_files   \$uri/index.html \$uri.html \$uri @app;
+____END2
+  fi)
+
+      location $loc {
         proxy_set_header  X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header  Host            \$http_host;
         proxy_redirect    off;

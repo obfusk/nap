@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-11-01
+# Date        : 2012-11-29
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -28,15 +28,21 @@ fi
 
 # --
 
-# Usage: nap_helper_daemon_nginx_port <server> <port>
+# Usage: nap_helper_daemon_nginx_port <server> <port> [<public>]
 # Creates nginx config; sets $nap_helper_daemon_nginx_conf; dies on
 # failure.
 function nap_helper_daemon_nginx_port () {                      # {{{1
-  local server="$1" port="$2"
+  local server="$1" port="$2" pub="$3"
 
   loadlib 'helper.nginx'
 
   nap_helper_daemon_nginx_conf="$nap_app_cfg/nginx.conf"
+
+  if [ -n "$pub" ]; then
+    cfg_nginx_public="$nap_app_app/$pub"
+  else
+    cfg_nginx_public=''
+  fi
 
   cfg_nginx_server="$server"
     cfg_nginx_port="$port"
@@ -48,15 +54,21 @@ function nap_helper_daemon_nginx_port () {                      # {{{1
     "$nap_helper_daemon_nginx_conf"
 }                                                               # }}}1
 
-# Usage: nap_helper_daemon_nginx_sock <server>
+# Usage: nap_helper_daemon_nginx_sock <server> [<public>]
 # Creates nginx config; sets $nap_helper_daemon_nginx_conf; dies on
 # failure.
 function nap_helper_daemon_nginx_sock () {                      # {{{1
-  local server="$1"
+  local server="$1" pub="$2"
 
   loadlib 'helper.nginx'
 
   nap_helper_daemon_nginx_conf="$nap_app_cfg/nginx.conf"
+
+  if [ -n "$pub" ]; then
+    cfg_nginx_public="$nap_app_app/$pub"
+  else
+    cfg_nginx_public=''
+  fi
 
   cfg_nginx_server="$server"
     cfg_nginx_sock="$nap_app_run/daemon.sock"

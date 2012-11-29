@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-11-01
+# Date        : 2012-11-29
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -13,7 +13,7 @@
 
 # --
 
-    nap_type_opts=( nginx server port cmd depcmd )
+    nap_type_opts=( nginx server port cmd depcmd public )
    cfg_ruby_cmd_d="${NAP_D_RUBY_CMD:-"SIGINT bundle exec rackup -E production \${LISTEN}"}"
 cfg_ruby_depcmd_d="${NAP_D_RUBY_DEPCMD:-bundle install}"
 
@@ -48,6 +48,10 @@ function nap_type_validate_opts () {                            # {{{1
     validate "$cfg_ruby_port" "$chk_num" 'invalid ruby.port'
   fi
 
+  # no validation for public (!?)
+  [ -n "$cfg_ruby_public" -a -z "$cfg_ruby_nginx" ] \
+    && fail 'invalid: ruby.public w/o ruby.nginx'
+
   # don't validate $cfg_ruby_{,dep}cmd -- is command line
   : ${cfg_ruby_cmd:="$cfg_ruby_cmd_d"}
   : ${cfg_ruby_depcmd:="$cfg_ruby_depcmd_d"}
@@ -64,10 +68,12 @@ function nap_type_install_deps () {                             # {{{1
 function nap_type_bootstrap () {                                # {{{1
   case "$cfg_ruby_nginx" in
     port)
-      nap_helper_daemon_nginx_port "$cfg_ruby_server" "$cfg_ruby_port"
+      nap_helper_daemon_nginx_port \
+        "$cfg_ruby_server" "$cfg_ruby_port" "$cfg_ruby_public"
     ;;
     sock)
-      nap_helper_daemon_nginx_sock "$cfg_ruby_server"
+      nap_helper_daemon_nginx_sock \
+        "$cfg_ruby_server" "$cfg_ruby_public"
     ;;
   esac
 }                                                               # }}}1
