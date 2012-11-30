@@ -1,5 +1,6 @@
 #!/bin/bash
 
+umask 0022
 export RAILS_ENV=production
 
 cmds=(
