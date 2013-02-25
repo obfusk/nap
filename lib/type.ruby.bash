@@ -4,9 +4,9 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-11-29
+# Date        : 2013-02-25
 #
-# Copyright   : Copyright (C) 2012  Felix C. Stegerman
+# Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
@@ -109,11 +109,13 @@ function nap_type_start () {                                    # {{{1
 
   if [ "$cfg_ruby_nginx" == sock ]; then
     sock="$nap_app_run/daemon.sock"
-    cmd="${cfg_ruby_cmd_//\${LISTEN\}/-l $sock}"
+    cmd_="${cfg_ruby_cmd_//\${LISTEN\}/-l $sock}"
+    cmd="${cmd_//\${SOCKET\}/$sock}"
     ohai "SOCKET=$sock"
   else
     port="$cfg_ruby_port"
-    cmd="${cfg_ruby_cmd_//\${LISTEN\}/-p $port}"
+    cmd_="${cfg_ruby_cmd_//\${LISTEN\}/-p $port}"
+    cmd="${cmd_//\${PORT\}/$port}"
     ohai "PORT=$port"
   fi
 

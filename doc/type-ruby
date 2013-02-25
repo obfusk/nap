@@ -2,9 +2,9 @@
 
 File        : type-ruby
 Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-Date        : 2012-11-29
+Date        : 2013-02-25
 
-Copyright   : Copyright (C) 2012  Felix C. Stegerman
+Copyright   : Copyright (C) 2013  Felix C. Stegerman
 Version     : v0.1.0
 
 --                                                                }}}1
@@ -49,8 +49,9 @@ Version     : v0.1.0
       'bundle exec unicorn -E production ${LISTEN}' (for unicorn), or
       simply remove '-E production' (for development).
 
-      All occurences of '${LISTEN}' are replaced by either '-p $PORT'
-      or '-l $SOCKET'.
+      All occurrences of '${LISTEN}' are replaced by either '-p $PORT'
+      or '-l $SOCKET'; '${SOCKET}' and '${PORT}' are replaced with
+      $SOCKET and $PORT, respectively.
 
       For a more advanced configuration, you can use a custom script
       (e.g. './_scripts/run-prod'); PORT/SOCKET are available as
