@@ -4,9 +4,9 @@
 #
 # File        : lib/helper.daemon.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-11-29
+# Date        : 2013-02-28
 #
-# Copyright   : Copyright (C) 2012  Felix C. Stegerman
+# Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2
 #
 # --                                                            # }}}1
@@ -210,6 +210,12 @@ function nap_helper_daemon_start () {                           # {{{1
   else
     ohai "$info"
     dpush "$nap_app_app"
+      local d="$( date +'%F %T' )"
+      local info="[ $d -- nap -- starting $cfg_name ... ]"
+
+      echo "$info" >> "$nap_app_log/daemon-stdout.log"
+      echo "$info" >> "$nap_app_log/daemon-stderr.log"
+
       $nohup "$@"  >> "$nap_app_log/daemon-stdout.log" \
                   2>> "$nap_app_log/daemon-stderr.log" &
       local pid=$!
