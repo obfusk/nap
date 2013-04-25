@@ -4,7 +4,7 @@
 #
 # File        : lib/type.ruby.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2013-02-25
+# Date        : 2013-04-25
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2
@@ -118,6 +118,8 @@ function nap_type_start () {                                    # {{{1
     cmd="${cmd_//\${PORT\}/$port}"
     ohai "PORT=$port"
   fi
+
+  [ -n "$sock" ] && rm "$sock"
 
   # don't quote cmd -- is command line
   PORT="$port" SOCKET="$sock" nap_helper_daemon_start 7 nohup $cmd
