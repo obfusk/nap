@@ -4,7 +4,7 @@
 #
 # File        : lib/cmd.update.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-08-12
+# Date        : 2014-04-26
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -32,6 +32,7 @@ function nap_cmd_run () {                                       # {{{1
   nap_type_running warn; local run="$?"
   [ "$run" -eq 0 ] && nap_type_stop
   nap_vcs_pull "$nap_app_app" $cfg_branch
+  nap_vcs_update_deps "$nap_app_app"
   nap_type_install_deps
   [ "$run" -eq 0 ] && nap_type_start
 

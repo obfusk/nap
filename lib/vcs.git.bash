@@ -4,7 +4,7 @@
 #
 # File        : lib/vcs.git.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2013-02-28
+# Date        : 2014-05-26
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2
@@ -30,6 +30,19 @@ function nap_vcs_pull () {                                      # {{{1
   dpush "$dir"
     ohai "$( join ' ' "${cmd[@]}" )"
     try 'git pull failed' "${cmd[@]}"
+  dpop
+}                                                               # }}}1
+
+# Usage: nap_vcs_update_deps <dir>
+# Updates (or initialises) dependencies (git submodules); dies on
+# failure.
+function nap_vcs_update_deps () {                               # {{{1
+  local dir="$1"
+  local cmd=( git submodule update --init --recursive )
+
+  dpush "$dir"
+    ohai "$( join ' ' "${cmd[@]}" )"
+    try 'git submodule update failed' "${cmd[@]}"
   dpop
 }                                                               # }}}1
 
