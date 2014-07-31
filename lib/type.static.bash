@@ -27,7 +27,7 @@ function nap_type_validate_opts () {
 # Usage: nap_type_install_deps
 # Installs dependencies; dies on failure.
 function nap_type_install_deps () {
-  echo '(nothing to do...)'
+  echo '(static: no dependencies to install)'
 }
 
 # Usage: nap_type_bootstrap
@@ -55,7 +55,7 @@ function nap_type_bootstrap_info () {
 # --
 
 # Usage: nap_type_status -[nqs]
-# Outputs daemon status.
+# Outputs status.
 function nap_type_status () {
   echo '(static)'
 }
@@ -63,25 +63,25 @@ function nap_type_status () {
 # Usage: nap_type_running [warn]
 # Returns non-zero if not running; warns if dead when warn is passed.
 function nap_type_running () {
-  echo '(static)'
+  return 0  # pretend to be running
 }
 
 # Usage: nap_type_start
 # Starts; dies on failure.
 function nap_type_start () {
-  echo '(nothing to do...)'
+  echo '(static: no daemon to start)'
 }
 
 # Usage: nap_type_stop
 # Stops; dies on failure.
 function nap_type_stop () {
-  echo '(nothing to do...)'
+  echo '(static: no daemon to stop)'
 }
 
 # Usage: nap_type_restart
 # Restarts; dies on failure.
 function nap_type_restart () {
-  echo '(nothing to do...)'
+  echo '(static: no daemon to restart)'
 }
 
 # --
