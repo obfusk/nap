@@ -4,7 +4,7 @@
 #
 # File        : lib/helper.nginx.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2012-11-29
+# Date        : 2014-07-31
 #
 # Copyright   : Copyright (C) 2012  Felix C. Stegerman
 # Licence     : GPLv2
@@ -18,6 +18,25 @@ else
 fi
 
 # --
+
+# Usage: nap_helper_nginx_static_mkcfg <file>
+# Writes config file; returns non-zero on failure.
+# Uses $cfg_nginx_{server,log,public}.
+function nap_helper_nginx_static_mkcfg () {                     # {{{1
+  local f="$1"
+  sed 's!^    !!g' <<__END > "$f"
+    server {
+      listen      80;
+      server_name $cfg_nginx_server;
+
+      access_log  $cfg_nginx_log/nginx-access.log;
+      error_log   $cfg_nginx_log/nginx-error.log;
+
+      root        $cfg_nginx_public;
+      try_files   \$uri/index.html \$uri.html \$uri;
+    }
+__END
+}                                                               # }}}1
 
 # Usage: nap_helper_nginx_port_mkcfg <file>
 # Writes config file; returns non-zero on failure.
