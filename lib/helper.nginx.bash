@@ -33,7 +33,7 @@ function nap_helper_nginx_static_mkcfg () {                     # {{{1
       error_log   $cfg_nginx_log/nginx-error.log;
 
       root        $cfg_nginx_public;
-      try_files   \$uri/index.html \$uri.html \$uri;
+      try_files   \$uri/index.html \$uri.html \$uri =404;
     }
 __END
 }                                                               # }}}1
