@@ -4,7 +4,7 @@
 #
 # File        : lib/type.static.bash
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2014-07-31
+# Date        : 2014-11-13
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv3+
@@ -13,7 +13,9 @@
 
 # --
 
-nap_type_opts=( server public )
+nap_type_opts=( server depcmd public )
+
+loadlib 'helper.daemon'   # for deps
 
 # --
 
@@ -22,12 +24,17 @@ nap_type_opts=( server public )
 function nap_type_validate_opts () {
   validate "$cfg_static_server" "$chk_host" 'invalid static.server'
   [ -n "$cfg_static_public" ] || fail 'invalid static.public'
+  # don't validate $cfg_static_depcmd -- is command line (& optional)
 }
 
 # Usage: nap_type_install_deps
 # Installs dependencies; dies on failure.
 function nap_type_install_deps () {
-  echo '(static: no dependencies to install)'
+  if [ -z "$cfg_static_depcmd" ]; then
+    echo '(static: no dependencies to install)'
+  else
+    nap_helper_daemon_deps "$cfg_static_depcmd" $cfg_static_depcmd
+  fi
 }
 
 # Usage: nap_type_bootstrap
